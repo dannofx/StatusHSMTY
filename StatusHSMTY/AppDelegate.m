@@ -49,4 +49,51 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark -
+#pragma mark Core Data stack
+
+/**
+ Returns the managed object model for the application.
+ If the model doesn't already exist, it is created from the application's model.
+ */
+- (NSManagedObjectModel *)managedObjectModel {
+    
+    if (managedObjectModel_ != nil) {
+        return managedObjectModel_;
+    }
+    managedObjectModel_ = [NSManagedObjectModel mergedModelFromBundles:nil];
+    return managedObjectModel_;
+}
+
+- (NSPersistentStoreCoordinator *)persistentStoreCoordinator {
+    if (persistentStoreCoordinator_ != nil) {
+        return persistentStoreCoordinator_;
+    }
+    
+    NSString* dir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
+    NSURL *storeURL = [NSURL fileURLWithPath:[dir stringByAppendingPathComponent:@"MP.sqlite"]];
+    
+    NSError *error = nil;
+    persistentStoreCoordinator_ = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
+    if (![persistentStoreCoordinator_ addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    return persistentStoreCoordinator_;
+}
+
+- (NSManagedObjectContext *)managedObjectContext {
+    if (managedObjectContext_ != nil) {
+        return managedObjectContext_;
+    }
+    
+    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
+    if (coordinator != nil) {
+        managedObjectContext_ = [[NSManagedObjectContext alloc] init];
+        [managedObjectContext_ setPersistentStoreCoordinator:coordinator];
+    }
+    return managedObjectContext_;
+}
+
 @end

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C60" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Contact" representedClassName="Contact" syncable="YES">
+        <attribute name="contactData" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="contactType" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="hackerspace" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="HackerSpaceInfo" inverseName="contacts" inverseEntity="HackerSpaceInfo" syncable="YES"/>
+    </entity>
+    <entity name="Event" representedClassName="Event" syncable="YES">
+        <attribute name="attendant" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="initDate" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="hackerSpace" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="HackerSpaceInfo" inverseName="events" inverseEntity="HackerSpaceInfo" syncable="YES"/>
+    </entity>
+    <entity name="HackerSpaceInfo" representedClassName="HackerSpaceInfo" syncable="YES">
+        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="closedIconPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="closedIconURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="iconPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="iconURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="lastchange" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="lat" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="lon" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="open" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="openIconPath" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="openIconURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="spaceName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="contacts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Contact" inverseName="hackerspace" inverseEntity="Contact" syncable="YES"/>
+        <relationship name="events" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Event" inverseName="hackerSpace" inverseEntity="Event" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="HackerSpaceInfo" positionX="160" positionY="192" width="128" height="268"/>
+        <element name="Contact" positionX="475" positionY="99" width="128" height="88"/>
+        <element name="Event" positionX="475" positionY="333" width="128" height="103"/>
+    </elements>
+</model>

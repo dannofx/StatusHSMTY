@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HSMTYViewController.h"
 
-@interface ContactViewController : UITableViewController
+@interface ContactViewController : HSMTYViewController<NSFetchedResultsControllerDelegate>
 
 @end

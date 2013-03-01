@@ -7,12 +7,24 @@
 //
 
 #import "ContactViewController.h"
+#import "HackerSpaceInfo.h"
+#import "ContentManager.h"
+#import "Configuration.h"
+#import "Notifications.h"
+#import "Contact.h"
 
 @interface ContactViewController ()
+{
+    HackerSpaceInfo * hackerSpace;
+}
+
+@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
 @end
 
 @implementation ContactViewController
+@synthesize fetchedResultsController=__fetchedResultsController;
+
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -26,12 +38,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    hackerSpace=[[ContentManager contentManager] spaceInfoForName:[Configuration currentSpaceName]];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,83 +48,155 @@
     // Dispose of any resources that can be recreated.
 }
 
+
+#pragma mark - Fetched results controller
+
+- (NSFetchedResultsController *)fetchedResultsController {
+    if (__fetchedResultsController != nil) {
+        return __fetchedResultsController;
+    }
+    
+    if(hackerSpace==nil||hackerSpace.url==nil)
+        return nil;
+    NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([Contact class]) inManagedObjectContext:self.coreDataContext];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
+    [fetchRequest setEntity:entity];
+    [fetchRequest setFetchBatchSize:10];
+
+    NSSortDescriptor *sortDescriptorByType = [[NSSortDescriptor alloc] initWithKey:@"contactType" ascending:NO];
+    NSSortDescriptor *sortDescriptorByData = [[NSSortDescriptor alloc] initWithKey:@"contactData" ascending:NO];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorByType,sortDescriptorByData,nil];
+    [fetchRequest setSortDescriptors:sortDescriptors];
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hackerspace == %@", hackerSpace];
+    [fetchRequest setPredicate:predicate];
+    
+    // Create the fetched results controller
+    NSString * cacheName=@"ContactContent";
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                                                managedObjectContext:self.coreDataContext
+                                                                                                  sectionNameKeyPath:nil cacheName:cacheName];
+    [NSFetchedResultsController deleteCacheWithName:cacheName];
+    
+    // Fetch the data
+    NSError *error = nil;
+    if (![aFetchedResultsController performFetch:&error]) {
+        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
+        abort();
+    }
+    
+    __fetchedResultsController=aFetchedResultsController;
+    __fetchedResultsController.delegate = self;
+    
+    return __fetchedResultsController;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+    if(self.fetchedResultsController==nil)
+        return 0;
+    return [[self.fetchedResultsController sections] count];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 0;
+    if(self.fetchedResultsController==nil)
+        return 0;
+    
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+    return [sectionInfo numberOfObjects];
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    // Configure the cell...
+    static NSString * cellIdentifier=@"contactItemCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    Contact * contact=[self.fetchedResultsController objectAtIndexPath:indexPath];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
+                                reuseIdentifier:cellIdentifier] ;
+    }
+    
+    //setea datos
+    cell.textLabel.text=contact.contactType;
+    cell.detailTextLabel.text=contact.contactData;
     
     return cell;
 }
 
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }   
-    else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+    NSLog(@"Actions!!!!");
 }
 
+
+
+#pragma mark - Fetched Result Controller Delegate
+
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView beginUpdates];
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView endUpdates];
+}
+
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type {
+    switch(type) {
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type newIndexPath:(NSIndexPath *)newIndexPath {
+    switch(type) {
+            // Data was inserted -- insert the data into the table view
+        case NSFetchedResultsChangeInsert:
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+            // Data was deleted -- delete the data from the table view
+        case NSFetchedResultsChangeDelete:
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+            // Data was updated (changed) -- reconfigure the cell for the data
+        case NSFetchedResultsChangeUpdate:
+        {
+            //No debe de pasar
+        }
+            break;
+            // Data was moved -- delete the data from the old location and insert the data into the new location
+        case NSFetchedResultsChangeMove:
+            [self.tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [self.tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath]withRowAnimation:UITableViewRowAnimationFade];
+            break;
+    }
+}
+
+#pragma mark - Data was updated
+-(void)spaceWasUpdatedWithName:(NSString *)spaceName coreDataID:(NSManagedObjectID *)coreDataID
+{
+    if(hackerSpace)
+        [self.coreDataContext refreshObject:hackerSpace mergeChanges:NO];
+    
+    hackerSpace=(HackerSpaceInfo *)[self.coreDataContext objectWithID:coreDataID];
+    __fetchedResultsController=nil;
+    [self.tableView reloadData];
+}
 @end

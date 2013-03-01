@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HSMTYViewController.h"
+#import "CustomPageViewController.h"
 
-@interface EventsListViewController : UITableViewController
+
+@interface EventsListViewController : HSMTYViewController<NSFetchedResultsControllerDelegate,CustomPageViewControllerDataSource>
 
 @end

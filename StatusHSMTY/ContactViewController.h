@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "HSMTYViewController.h"
 
-@interface ContactViewController : HSMTYViewController<NSFetchedResultsControllerDelegate>
+@interface ContactViewController : HSMTYViewController<NSFetchedResultsControllerDelegate,UIActionSheetDelegate>
 
 @end

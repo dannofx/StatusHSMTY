@@ -18,7 +18,7 @@
 @property (nonatomic, retain) IBOutlet MKMapView *zoneMapView;
 @property (nonatomic) CGFloat longitude;
 @property (nonatomic) CGFloat latitude;
-@property (nonatomic,retain) NSString * title;
+@property (nonatomic,retain) NSString * titleLocation;
 @property (nonatomic,retain) NSString * subtitle;
 
 

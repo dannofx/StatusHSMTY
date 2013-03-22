@@ -12,10 +12,12 @@
 #import "Configuration.h"
 #import "Notifications.h"
 #import "Contact.h"
+#import "Notifications.h"
 
 @interface ContactViewController ()
 {
     HackerSpaceInfo * hackerSpace;
+    Contact * currentContact;
 }
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
@@ -134,7 +136,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"Actions!!!!");
+    currentContact=[self.fetchedResultsController objectAtIndexPath:indexPath];
+    NSString *actionSheetTitle = @"What do you want to do?"; //Action Sheet Title
+    NSString *destructiveTitle = @"Cancel"; //Action Sheet Button Titles
+    NSString *other1 = @"Copy";
+
+    NSString *cancelTitle = @"Cancel Button";
+    UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                  initWithTitle:actionSheetTitle
+                                  delegate:self
+                                  cancelButtonTitle:cancelTitle
+                                  destructiveButtonTitle:destructiveTitle
+                                  otherButtonTitles:other1, nil];
+    [actionSheet showInView:self.view];
 }
 
 
@@ -198,5 +212,19 @@
     hackerSpace=(HackerSpaceInfo *)[self.coreDataContext objectWithID:coreDataID];
     __fetchedResultsController=nil;
     [self.tableView reloadData];
+}
+
+#pragma mark - Action Sheet delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex==0)
+    {
+        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+        pasteboard.string = currentContact.contactData;
+        [Notifications launchInformationBox:nil message:@"Your data was copied to your clipboard"];
+    }
+    
+    currentContact=nil;
+    
 }
 @end

@@ -273,7 +273,7 @@
         HackerMapViewController * mapViewController=segue.destinationViewController;
         mapViewController.longitude=hackerSpace.lon;
         mapViewController.latitude=hackerSpace.lat;
-        mapViewController.title=hackerSpace.spaceName;
+        mapViewController.titleLocation=hackerSpace.spaceName;
         mapViewController.subtitle=hackerSpace.address;
         
     }

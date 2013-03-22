@@ -18,7 +18,7 @@
 
 @implementation HackerMapViewController
 @synthesize zoneMapView;
-@synthesize title;
+@synthesize titleLocation;
 @synthesize subtitle;
 @synthesize longitude;
 @synthesize latitude;
@@ -40,7 +40,7 @@
 	[zoneMapView setDelegate:self];
 	
     spaceAnnotation = [[HackerSpaceAnnotation alloc] init]; 
-	spaceAnnotation.title = self.title;
+	spaceAnnotation.title = self.titleLocation;
 	spaceAnnotation.subtitle = self.subtitle;
 	spaceAnnotation.coordinate = region.center; 
 	[zoneMapView addAnnotation:spaceAnnotation];

@@ -175,6 +175,9 @@
                                             <constraint firstItem="RO4-12-89M" firstAttribute="centerX" secondItem="lIY-89-o5g" secondAttribute="centerX" type="default" id="0cP-6O-dba"/>
                                             <constraint firstItem="RO4-12-89M" firstAttribute="top" secondItem="lIY-89-o5g" secondAttribute="top" constant="12" id="EWA-dP-IOI"/>
                                         </constraints>
+                                        <connections>
+                                            <segue destination="kkN-Ez-fFv" kind="modal" identifier="showmapssegue" id="oYN-2e-CZb"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -209,13 +212,7 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Item" id="mtu-1k-DBM"/>
-                    <navigationItem key="navigationItem" id="ewV-N5-6MM">
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="Y36-eC-kWf">
-                            <connections>
-                                <action selector="performUpdate:" destination="uWt-L4-lx9" id="fS4-Nd-fzs"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="ewV-N5-6MM"/>
                     <connections>
                         <outlet property="addressLabel" destination="XiE-uo-PT4" id="93W-3i-9mE"/>
                         <outlet property="epochLabel" destination="COV-dx-Jc1" id="PtB-es-p3b"/>
@@ -231,6 +228,59 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eb4-pS-d39" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="776" y="-628"/>
+        </scene>
+        <!--Hacker Map View Controller-->
+        <scene sceneID="S1a-0z-eeI">
+            <objects>
+                <viewController id="kkN-Ez-fFv" customClass="HackerMapViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nOv-hH-irI">
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t9x-ie-dQb">
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="edq-kN-sXq"/>
+                                    <barButtonItem title="Open maps application " id="psM-8E-hDQ">
+                                        <connections>
+                                            <action selector="openMapsApp:" destination="kkN-Ez-fFv" id="oJQ-KB-Nwe"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="CYf-gg-kdg"/>
+                                </items>
+                            </toolbar>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E0d-bZ-v8z">
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="1HQ-Jl-frq"/>
+                                    <barButtonItem title="Done" id="6cA-we-uZ9">
+                                        <connections>
+                                            <action selector="hideController:" destination="kkN-Ez-fFv" id="1zp-Rq-fbY"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="8Fb-tN-EUr"/>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="E0d-bZ-v8z" firstAttribute="trailing" secondItem="nOv-hH-irI" secondAttribute="trailing" type="default" id="Al8-6X-fmr"/>
+                            <constraint firstItem="t9x-ie-dQb" firstAttribute="trailing" secondItem="nOv-hH-irI" secondAttribute="trailing" type="default" id="Dfs-dI-5es"/>
+                            <constraint firstItem="8Fb-tN-EUr" firstAttribute="trailing" secondItem="nOv-hH-irI" secondAttribute="trailing" type="default" id="Poj-Eb-orI"/>
+                            <constraint firstItem="E0d-bZ-v8z" firstAttribute="top" secondItem="nOv-hH-irI" secondAttribute="top" type="default" id="REr-4t-cL9"/>
+                            <constraint firstItem="t9x-ie-dQb" firstAttribute="top" secondItem="8Fb-tN-EUr" secondAttribute="bottom" type="default" id="S4j-jE-31q"/>
+                            <constraint firstItem="E0d-bZ-v8z" firstAttribute="leading" secondItem="nOv-hH-irI" secondAttribute="leading" type="default" id="Ufc-nU-7L0"/>
+                            <constraint firstItem="8Fb-tN-EUr" firstAttribute="top" secondItem="E0d-bZ-v8z" secondAttribute="bottom" type="default" id="ZwS-X8-U63"/>
+                            <constraint firstItem="8Fb-tN-EUr" firstAttribute="leading" secondItem="nOv-hH-irI" secondAttribute="leading" type="default" id="gIq-xL-KgV"/>
+                            <constraint firstItem="t9x-ie-dQb" firstAttribute="bottom" secondItem="nOv-hH-irI" secondAttribute="bottom" type="default" id="jqh-fY-zv8"/>
+                            <constraint firstItem="t9x-ie-dQb" firstAttribute="leading" secondItem="nOv-hH-irI" secondAttribute="leading" type="default" id="pEy-qe-hlD"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="zoneMapView" destination="8Fb-tN-EUr" id="tga-KG-pfp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mWb-Wz-AvY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1267" y="-628"/>
         </scene>
         <!--Events List View Controller - Item-->
         <scene sceneID="j8z-CC-TTA">
@@ -296,11 +346,7 @@
                     <tabBarItem key="tabBarItem" title="Item" id="qBN-kG-H1J"/>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="Rmv-hd-thp">
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="w7J-Dg-fba">
-                            <connections>
-                                <action selector="performUpdate:" destination="HRO-uC-2XK" id="qhF-0r-qjY"/>
-                            </connections>
-                        </barButtonItem>
+                        <nil key="title"/>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </tableViewController>
@@ -421,19 +467,13 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" title="Item" id="FPb-U8-boc"/>
-                    <navigationItem key="navigationItem" id="45K-rS-1oJ">
-                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="2gr-s3-xud">
-                            <connections>
-                                <action selector="performUpdate:" destination="tCm-f1-bYM" id="zUv-La-O0P"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="45K-rS-1oJ"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fV6-34-bcH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="784" y="912"/>
         </scene>
-        <!--Space Selector Controller - Root View Controller-->
+        <!--Space Selector Controller - List-->
         <scene sceneID="3Qf-6l-abf">
             <objects>
                 <tableViewController storyboardIdentifier="spaceSelectorTable" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BIU-od-BXh" customClass="SpaceSelectorController" sceneMemberID="viewController">
@@ -441,23 +481,53 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <searchBar key="tableHeaderView" contentMode="redraw" id="JQS-zH-kp8">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <textInputTraits key="textInputTraits"/>
+                            <connections>
+                                <outlet property="delegate" destination="BIU-od-BXh" id="jbw-Sk-dIq"/>
+                            </connections>
+                        </searchBar>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" id="bVP-yj-98e">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                            <tableViewCell contentMode="scaleToFill" restorationIdentifier="selectionItemCell" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="selectionItemCell" id="bVP-yj-98e" customClass="SpaceSelectionCell">
+                                <rect key="frame" x="0.0" y="66" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </tableViewCell>
                         </prototypes>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="kuN-9k-G0O">
-                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="aVq-pZ-FRC"/>
+                    <navigationItem key="navigationItem" title="List" id="kuN-9k-G0O">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="aVq-pZ-FRC">
+                            <connections>
+                                <action selector="cancel" destination="BIU-od-BXh" id="2x3-Nv-Izs"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="refresh" id="905-I9-Y8d">
+                            <connections>
+                                <action selector="updateList" destination="BIU-od-BXh" id="fM6-Qw-cfZ"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="Kxf-oA-rff" id="Snq-hz-684"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u4o-pv-a79" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="Kxf-oA-rff">
+                    <connections>
+                        <outlet property="delegate" destination="BIU-od-BXh" id="Zv5-IJ-8Sf"/>
+                        <outlet property="searchBar" destination="JQS-zH-kp8" id="Ux4-h4-10d"/>
+                        <outlet property="searchContentsController" destination="BIU-od-BXh" id="HL9-BR-6Fm"/>
+                        <outlet property="searchResultsDataSource" destination="BIU-od-BXh" id="BBo-CV-Kw2"/>
+                        <outlet property="searchResultsDelegate" destination="BIU-od-BXh" id="m2G-jm-hYK"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="152" y="1801"/>
         </scene>
@@ -550,13 +620,33 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/HSMTYViewController.h"/>
             <relationships>
                 <relationship kind="action" name="performUpdate:"/>
+                <relationship kind="action" name="selectSpace:"/>
+            </relationships>
+        </class>
+        <class className="HackerMapViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HackerMapViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="hideController:"/>
+                <relationship kind="action" name="openMapsApp:"/>
+                <relationship kind="outlet" name="zoneMapView" candidateClass="MKMapView"/>
             </relationships>
         </class>
         <class className="NSLayoutConstraint" superclassName="NSObject">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
-        <class className="SpaceSelectorController" superclassName="UITableViewController">
+        <class className="SpaceSelectionCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SpaceSelectionCell.h"/>
+            <relationships>
+                <relationship kind="action" name="switchValueChanged:"/>
+                <relationship kind="outlet" name="followingSwitch" candidateClass="UISwitch"/>
+            </relationships>
+        </class>
+        <class className="SpaceSelectorController" superclassName="HSMTYViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SpaceSelectorController.h"/>
+            <relationships>
+                <relationship kind="action" name="cancel"/>
+                <relationship kind="action" name="updateList"/>
+            </relationships>
         </class>
         <class className="SpaceSelectorNavigationController" superclassName="UINavigationController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/SpaceSelectorNavigationController.h"/>

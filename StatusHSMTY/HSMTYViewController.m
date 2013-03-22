@@ -13,6 +13,8 @@
 
 @interface HSMTYViewController ()
 
+-(void)addBasicButtons;
+
 @end
 
 @implementation HSMTYViewController
@@ -31,6 +33,16 @@
 {
     [super viewDidLoad];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFinishedWithUserInfo:) name:SPACE_UPDATE_NOTIFICATION_NAME object:nil];
+    [self addBasicButtons];
+}
+
+-(void)addBasicButtons
+{
+    //Right buttons
+    UIBarButtonItem * refreshButton=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(performUpdate:)];
+    UIBarButtonItem * selectButton=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(selectSpace:)];
+    self.navigationItem.rightBarButtonItems = @[refreshButton,selectButton];
+
 }
 
 -(NSManagedObjectContext *)coreDataContext{
@@ -53,6 +65,11 @@
 {
     ContentManager * contentManager=[ContentManager contentManager];
     [contentManager launchContentUpdate];
+
+}
+-(IBAction)selectSpace:(id)sender
+{
+    [[ContentManager contentManager] showSpaceSelector];
 
 }
 

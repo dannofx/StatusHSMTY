@@ -15,6 +15,7 @@
 #import "Notifications.h"
 #import "Configuration.h"
 #import "Reachability.h"
+#import "HackerMapViewController.h"
 #import <MapKit/MapKit.h>
 
 @interface StatusViewController ()
@@ -60,38 +61,8 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    /*//http://stackoverflow.com/questions/12504294/programmatically-open-maps-app-in-ios-6
-    Class mapItemClass = [MKMapItem class];
-    if (mapItemClass && [mapItemClass respondsToSelector:@selector(openMapsWithItems:launchOptions:)])
-    {
-        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-        [geocoder geocodeAddressString:@"Piccadilly Circus, London, UK"
-                     completionHandler:^(NSArray *placemarks, NSError *error) {
-                         
-                         // Convert the CLPlacemark to an MKPlacemark
-                         // Note: There's no error checking for a failed geocode
-                         CLPlacemark *geocodedPlacemark = [placemarks objectAtIndex:0];
-                         MKPlacemark *placemark = [[MKPlacemark alloc]
-                                                   initWithCoordinate:geocodedPlacemark.location.coordinate
-                                                   addressDictionary:geocodedPlacemark.addressDictionary];
-                         
-                         // Create a map item for the geocoded address to pass to Maps app
-                         MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
-                         [mapItem setName:geocodedPlacemark.name];
-                         
-                         // Set the directions mode to "Driving"
-                         // Can use MKLaunchOptionsDirectionsModeWalking instead
-                         NSDictionary *launchOptions = @{MKLaunchOptionsDirectionsModeKey : MKLaunchOptionsDirectionsModeDriving};
-                         
-                         // Get the "Current User Location" MKMapItem
-                         MKMapItem *currentLocationMapItem = [MKMapItem mapItemForCurrentLocation];
-                         
-                         // Pass the current location and destination map items to the Maps app
-                         // Set the direction mode in the launchOptions dictionary
-                         [MKMapItem openMapsWithItems:@[currentLocationMapItem, mapItem] launchOptions:launchOptions];
-                         
-                     }];
-    }*/
+    //http://stackoverflow.com/questions/12504294/programmatically-open-maps-app-in-ios-6
+
 }
 
 - (void)didReceiveMemoryWarning
@@ -134,6 +105,7 @@
         request.failObserverSelector=@selector(imageDownloadFailed:);
         [contentManager addDownloadItemRequest:request];
         [self setLogoViewInLodingState:YES];
+        self.logoImageView.image=nil;
         
     }else{
         self.logoImageView.image=logoImage;
@@ -152,7 +124,10 @@
         request.failObserverSelector=@selector(imageDownloadFailed:);
         [contentManager addDownloadItemRequest:request];
         if(isOpen)
+        {
+            self.statusImageView.image=nil;
             [self setStatusViewInLodingState:YES];
+        }
         
     }else{
         if(!isOpen)
@@ -173,7 +148,10 @@
         request.failObserverSelector=@selector(imageDownloadFailed:);
         [contentManager addDownloadItemRequest:request];
         if(!isOpen)
+        {
+            self.statusImageView.image=nil;
             [self setStatusViewInLodingState:YES];
+        }
     }else{
         if(isOpen)
         {
@@ -247,7 +225,7 @@
     NSLog(@"Show me your website, baby!!!");
 }
 
-#pragma mark - Data was updated
+#pragma mark - Space updates
 -(void)spaceWasUpdatedWithName:(NSString *)spaceName coreDataID:(NSManagedObjectID *)coreDataID
 {
     if(hackerSpace)
@@ -275,6 +253,30 @@
         [self.status_activityIndicator startAnimating];
     else
         [self.status_activityIndicator stopAnimating];
+}
+
+#pragma mark - Segues
+
+-(BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+{
+    if([identifier isEqualToString:@"showmapssegue"])
+    {
+        return (hackerSpace!=nil&&hackerSpace.url!=nil);
+        
+    }else
+        return YES;
+}
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"showmapssegue"])
+    {
+        HackerMapViewController * mapViewController=segue.destinationViewController;
+        mapViewController.longitude=hackerSpace.lon;
+        mapViewController.latitude=hackerSpace.lat;
+        mapViewController.title=hackerSpace.spaceName;
+        mapViewController.subtitle=hackerSpace.address;
+        
+    }
 }
 
 @end

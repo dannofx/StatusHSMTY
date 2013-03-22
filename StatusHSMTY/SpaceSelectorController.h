@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HSMTYViewController.h"
+#import "SpaceSelectionCell.h"
+#import <CoreData/CoreData.h>
 
-@interface SpaceSelectorController : UITableViewController
+
+@interface SpaceSelectorController : HSMTYViewController<NSFetchedResultsControllerDelegate,UISearchDisplayDelegate,SpaceSelectionCellDelegate>
+
+
+-(IBAction)cancel;
+-(IBAction)updateList;
 
 @end

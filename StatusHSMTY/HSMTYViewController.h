@@ -13,6 +13,7 @@
 @property (nonatomic,assign) NSManagedObjectContext * coreDataContext;
 
 -(IBAction)performUpdate:(id)sender;
+-(IBAction)selectSpace:(id)sender;
 -(BOOL)isUpdating;
 
 -(void)spaceWasUpdatedWithName:(NSString *)spaceName coreDataID:(NSManagedObjectID *)coreDataID;

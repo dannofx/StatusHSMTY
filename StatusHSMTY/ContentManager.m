@@ -11,6 +11,7 @@
 #import "ASIHTTPRequest.h"
 #import "ASINetworkQueue.h"
 #import "AppDelegate.h"
+#import "PushEnablerRequest.h"
 #import "Notifications.h"
 #import "Configuration.h"
 
@@ -20,6 +21,8 @@
 @interface ContentManager()
 {
     ASINetworkQueue * networkDownloadQueue;
+    ASINetworkQueue * networkPushQueue;
+    NSString * workingToken;
 }
     @property (nonatomic,assign) NSManagedObjectContext * coreDataContext;
     -(void)contentDownloadedSuccessfully:(ASIHTTPRequest *) request;
@@ -32,8 +35,12 @@
     -(void)setInUpdateState:(BOOL)updating;
     -(void)updateSpacesListWithDictionary:(NSDictionary *)dictionary;
     -(NSArray *)allSpacesWithName:(NSString *)spaceName;
+    -(NSArray *)allSpacesEnabledForPush;
+    -(NSFetchRequest *)allSpacesBasicFetchRequest;
     -(HackerSpaceInfo *)preparedSpaceForUpdateWithName:(NSString *)spaceName;
     -(void)singletonInit;
+    -(void)enableRequestIsFinished:(PushEnablerRequest *)request;
+    -(void)enableRequestFailed:(PushEnablerRequest *)request;
     + (id)hiddenAlloc;
 @end
 @implementation ContentManager
@@ -96,10 +103,22 @@
     [networkDownloadQueue setDownloadProgressDelegate:self];
     [networkDownloadQueue setDelegate:self];
     [networkDownloadQueue setRequestDidFailSelector:@selector(downloadQueueFailed:)];
+    
+    networkPushQueue=[[ASINetworkQueue alloc] init];
+    networkPushQueue.showAccurateProgress=YES;
+    [networkPushQueue setDownloadProgressDelegate:self];
+    [networkPushQueue setDelegate:self];
+    [networkPushQueue setRequestDidFailSelector:@selector(pushQueueFailed:)];
+    [networkPushQueue setRequestDidFinishSelector:@selector(pushQueueFinish:)];
+    
     [self setInUpdateState:NO];
 }
 
 #pragma mark - User methods
+-(void)showSpaceSelector
+{
+    [self.selectionDelegate requestForhackerSpaceSelection];
+}
 -(void)launchContentUpdate
 {
     NSString * spaceURL=[Configuration currentSpaceAPIURL];
@@ -135,7 +154,8 @@
         return;
     [self setInUpdateState:YES];
     [self activateLoadingNotifier:YES];
-    NSURL *url = [NSURL URLWithString:hackersURL];
+    //NSURL *url = [NSURL URLWithString:hackersURL];
+    NSURL *url = [NSURL URLWithString:HSMTY_URL];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     [request setTimeOutSeconds:TIMEOUT_HIGH_PRIORITY];
     [request setDidFinishSelector:@selector(contentDownloadedSuccessfully:)];
@@ -145,9 +165,39 @@
     
 }
 
+-(void)launchUpdateForPushToken:(NSString *)pushToken
+{
+    if(workingToken==nil)
+    {
+    NSArray * spaces=[self allSpacesEnabledForPush];
+    workingToken=pushToken;
+  
+     for(HackerSpaceInfo * space in spaces)
+     {
+         PushEnablerRequest * request=[PushEnablerRequest requestToAddURL:space.url_status];
+         [request setDelegate:self];
+         [request setDidFinishSelector:@selector(enableRequestIsFinished:)];
+         [request setDidFailSelector:@selector(enableRequestFailed:)];
+         [networkPushQueue addOperation:request];
+         
+     }
+        [networkPushQueue go];
+    }
+}
+-(void)launchTokenRemoval
+{
+    PushEnablerRequest *request = [PushEnablerRequest requestToDeleteToken];
+    [request setTimeOutSeconds:TIMEOUT_HIGH_PRIORITY];
+    [request setDidFinishSelector:@selector(contentDownloadedSuccessfully:)];
+    [request setDidFailSelector:@selector(contentDownloadFailed:)];
+    [request setDelegate:self];
+    [request startAsynchronous];
+
+}
 
 
-#pragma mark - Private Methods
+
+#pragma mark - Network Callback Methods
 
 -(void)contentDownloadedSuccessfully:(ASIHTTPRequest *) request
 {
@@ -198,6 +248,32 @@
 {
     //TODO: Implement
 }
+-(void)pushQueueFailed:(ASIHTTPRequest *)request
+{
+    workingToken=nil;
+}
+-(void)pushQueueFinish:(ASIHTTPRequest *)request
+{
+    [Configuration setPushToken:workingToken];
+    workingToken=nil;
+    
+}
+-(void)pushTokenRemovalSuccessfull:(PushEnablerRequest *)request
+{
+    [Configuration setPushToken:nil];
+}
+-(void)pushTokenRemovalFailed:(PushEnablerRequest *)request
+{
+     //TODO: Implement
+}
+-(void)enableRequestIsFinished:(PushEnablerRequest *)request
+{
+    //TODO: Implement
+}
+-(void)enableRequestFailed:(PushEnablerRequest *)request
+{
+   //TODO:Implement
+}
 
 -(HackerSpaceInfo *)createHackerSpaceWithName:(NSString *)spaceName
 {
@@ -209,6 +285,28 @@
 
 -(NSArray *)allSpacesWithName:(NSString *)spaceName
 {
+    NSFetchRequest * fetchRequest=[self allSpacesBasicFetchRequest];
+    if(spaceName)
+    {
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"spaceName == %@", spaceName];
+        [fetchRequest setPredicate:predicate];
+    }
+    
+    
+    return [self.coreDataContext executeFetchRequest:fetchRequest error:nil];
+}
+
+-(NSArray *)allSpacesEnabledForPush
+{
+    NSPredicate * predicate=[NSPredicate predicateWithFormat:@"following == YES"];
+    NSFetchRequest * fetchRequest=[self allSpacesBasicFetchRequest];
+    [fetchRequest setPredicate:predicate];
+    
+    return [self.coreDataContext executeFetchRequest:fetchRequest error:nil];
+
+}
+-(NSFetchRequest *)allSpacesBasicFetchRequest
+{
     NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([HackerSpaceInfo class]) inManagedObjectContext:self.coreDataContext];
     
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] init];
@@ -218,14 +316,7 @@
     NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorByTitle,nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
     
-    if(spaceName)
-    {
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"spaceName == %@", spaceName];
-        [fetchRequest setPredicate:predicate];
-    }
-    
-    
-    return [self.coreDataContext executeFetchRequest:fetchRequest error:nil];
+    return fetchRequest;
 }
 -(HackerSpaceInfo *) spaceInfoForName:(NSString *)spaceName
 {
@@ -340,7 +431,7 @@
         [self.coreDataContext deleteObject:spaceToDelete];
     }
     [spacesToDelete removeAllObjects];
-    [self save];
+    [self saveCoreData];
     [self setInUpdateState:NO];
 }
 -(void)updateCurrentSpaceWithData:(NSDictionary *)dictionary
@@ -354,8 +445,8 @@
     spaceInfo.iconURL=[dictionary valueForKey:@"logo"];
     spaceInfo.iconPath=[self createImageFilePathForSpaceName:spaceName];
     spaceInfo.lastchange=[[dictionary valueForKey:@"lastchange"] integerValue];
-    spaceInfo.lat=[[dictionary valueForKey:@"lon"] floatValue];
-    spaceInfo.lon= [[dictionary valueForKey:@"lat"] floatValue];
+    spaceInfo.lat=[[dictionary valueForKey:@"lat"] floatValue];
+    spaceInfo.lon= [[dictionary valueForKey:@"lon"] floatValue];
     spaceInfo.open=[[dictionary valueForKey:@"open"] boolValue];
     spaceInfo.status=[dictionary valueForKey:@"status"];
     NSDictionary * stateIconsDictioanry=[dictionary objectForKey:@"icon"];
@@ -430,7 +521,7 @@
             
         }
     
-    [self save];
+    [self saveCoreData];
     
     [self notifyUpdateWithSpace:spaceInfo];
     [self activateLoadingNotifier:NO];
@@ -459,7 +550,7 @@
             NSLog(@"[ERROR]:Ocurrio un error al escribir el folder %@",folderPath);
     }
 }
--(void)save
+-(void)saveCoreData
 {
     //Save all operations
     NSError *error = nil;

@@ -7,6 +7,14 @@
 //
 
 #import "AppDelegate.h"
+#import "Configuration.h"
+#import "ContentManager.h"
+
+@interface AppDelegate()
+
+-(void)launchSpaceUpdateNotificationWithURL:(NSString *)url;
+
+@end
 
 @implementation AppDelegate
 
@@ -17,6 +25,19 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+	[[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    
+    [UIApplication sharedApplication].applicationIconBadgeNumber =0;
+	if (launchOptions != nil)
+	{
+		NSDictionary* dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
+		if (dictionary != nil)
+		{
+			NSLog(@"Launched from push notification: %@", dictionary);
+			//[self addMessageFromRemoteNotification:dictionary updateUI:NO];
+		}
+	}
     // Override point for customization after application launch.
     return YES;
 }
@@ -94,5 +115,57 @@
     }
     return managedObjectContext_;
 }
+
+
+#pragma mark -
+#pragma mark Push notifications
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+	NSString* oldToken = [Configuration pushToken];
+	NSString* newToken = [deviceToken description];
+	newToken = [newToken stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+	newToken = [newToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+
+	if (![newToken isEqualToString:oldToken])
+	{
+		[[ContentManager contentManager] launchUpdateForPushToken:newToken];
+	}
+}
+
+
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+	// If we get here, the app could not obtain a device token. In that case,
+	// the user can still send messages to the server but the app will not
+	// receive any push notifications when other users send messages to the
+	// same chat room.
+    NSString * oldToken=[Configuration pushToken];
+    if(oldToken!=nil)
+    {
+        [[ContentManager contentManager] launchTokenRemoval];
+    }
+    
+
+}
+
+- (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
+{
+
+    NSString* urlValue = [userInfo valueForKey:@"url"];
+    [self launchSpaceUpdateNotificationWithURL:urlValue];
+}
+
+
+-(void)launchSpaceUpdateNotificationWithURL:(NSString *)url
+{
+    if(url!=nil)
+    {
+        [[ContentManager contentManager] launchContentUpdateWithURL:url];
+    }
+
+}
+
 
 @end

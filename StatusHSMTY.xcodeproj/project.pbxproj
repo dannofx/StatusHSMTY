@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5103534916E557A10038E5F9 /* SpaceSelectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5103534816E557A10038E5F9 /* SpaceSelectionCell.m */; };
 		5109AEE616D58A2D00C6FE4F /* HSMTYViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5109AEE516D58A2D00C6FE4F /* HSMTYViewController.m */; };
 		5109DC7C16E10F8D00D9E823 /* SpaceSelectorController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5109DC7B16E10F8D00D9E823 /* SpaceSelectorController.m */; };
 		5109DC7F16E1106D00D9E823 /* SpaceSelectorNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5109DC7E16E1106D00D9E823 /* SpaceSelectorNavigationController.m */; };
@@ -50,6 +51,11 @@
 		514B624D16D3F50A00A4CA4E /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 514B624C16D3F50A00A4CA4E /* libxml2.dylib */; };
 		514B624F16D3F5D900A4CA4E /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 514B624E16D3F5D900A4CA4E /* MobileCoreServices.framework */; };
 		514B625016D3F6AC00A4CA4E /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 514B622516D3F2E400A4CA4E /* ASIAuthenticationDialog.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5167432616E5A70600B664C3 /* STKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = 5167432516E5A70600B664C3 /* STKeychain.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5167432916E6653F00B664C3 /* PushEnablerRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5167432816E6653F00B664C3 /* PushEnablerRequest.m */; };
+		5167432C16E6673800B664C3 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 5167432B16E6673700B664C3 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5182026416FBF90000F6E979 /* HackerMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5182026116FBF90000F6E979 /* HackerMapViewController.m */; };
+		5182026516FBF90000F6E979 /* HackerSpaceAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5182026316FBF90000F6E979 /* HackerSpaceAnnotation.m */; };
 		51DAF8B216D584510019C046 /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 51DAF8B116D584510019C046 /* Notifications.m */; };
 		51E8E5B716D3E29C0077BC9E /* StatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51E8E5B616D3E29C0077BC9E /* StatusViewController.m */; };
 		51E8E5BA16D3E2BC0077BC9E /* EventsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51E8E5B916D3E2BC0077BC9E /* EventsListViewController.m */; };
@@ -64,6 +70,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5103534716E557A10038E5F9 /* SpaceSelectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceSelectionCell.h; sourceTree = "<group>"; };
+		5103534816E557A10038E5F9 /* SpaceSelectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpaceSelectionCell.m; sourceTree = "<group>"; };
 		5109AEE416D58A2D00C6FE4F /* HSMTYViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSMTYViewController.h; sourceTree = "<group>"; };
 		5109AEE516D58A2D00C6FE4F /* HSMTYViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSMTYViewController.m; sourceTree = "<group>"; };
 		5109DC7A16E10F8D00D9E823 /* SpaceSelectorController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpaceSelectorController.h; sourceTree = "<group>"; };
@@ -135,6 +143,16 @@
 		514B624C16D3F50A00A4CA4E /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		514B624E16D3F5D900A4CA4E /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		514B625116D3F9AF00A4CA4E /* GlobalConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GlobalConstants.h; sourceTree = "<group>"; };
+		5167432416E5A70600B664C3 /* STKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STKeychain.h; sourceTree = "<group>"; };
+		5167432516E5A70600B664C3 /* STKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STKeychain.m; sourceTree = "<group>"; };
+		5167432716E6653F00B664C3 /* PushEnablerRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PushEnablerRequest.h; sourceTree = "<group>"; };
+		5167432816E6653F00B664C3 /* PushEnablerRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PushEnablerRequest.m; sourceTree = "<group>"; };
+		5167432A16E6673700B664C3 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		5167432B16E6673700B664C3 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		5182026016FBF90000F6E979 /* HackerMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HackerMapViewController.h; sourceTree = "<group>"; };
+		5182026116FBF90000F6E979 /* HackerMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HackerMapViewController.m; sourceTree = "<group>"; };
+		5182026216FBF90000F6E979 /* HackerSpaceAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HackerSpaceAnnotation.h; sourceTree = "<group>"; };
+		5182026316FBF90000F6E979 /* HackerSpaceAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HackerSpaceAnnotation.m; sourceTree = "<group>"; };
 		51DAF8B016D584510019C046 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
 		51DAF8B116D584510019C046 /* Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notifications.m; sourceTree = "<group>"; };
 		51E8E5B516D3E29C0077BC9E /* StatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusViewController.h; sourceTree = "<group>"; };
@@ -185,7 +203,6 @@
 		5109AEE316D589FB00C6FE4F /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				51FBDEB216DFD2A80006744A /* Space Selector */,
 				5141213E16D8288E0017E7ED /* CustomPageViewController.h */,
 				5141213F16D8288E0017E7ED /* CustomPageViewController.m */,
 				5109AEE416D58A2D00C6FE4F /* HSMTYViewController.h */,
@@ -194,6 +211,8 @@
 				51FBDEB716DFD7410006744A /* HSMTYTabBarController.m */,
 				514B620A16D3E56700A4CA4E /* HSMTYNavigationController.h */,
 				514B620B16D3E56700A4CA4E /* HSMTYNavigationController.m */,
+				5182025F16FBF8DC00F6E979 /* Maps */,
+				51FBDEB216DFD2A80006744A /* Space Selector */,
 				514B620616D3E4DD00A4CA4E /* Status */,
 				514B620516D3E4D000A4CA4E /* Events */,
 				514B620416D3E4BE00A4CA4E /* Contact */,
@@ -245,8 +264,6 @@
 				514B620D16D3EBB700A4CA4E /* CoreData */,
 				5126FB2F16D2EBC1007246D8 /* AppDelegate.h */,
 				5126FB3016D2EBC1007246D8 /* AppDelegate.m */,
-				51FFAF2816D69FDE0012992A /* DownloadRequest.h */,
-				51FFAF2916D69FDE0012992A /* DownloadRequest.m */,
 				5126FB3816D2EBC1007246D8 /* MainStoryboard.storyboard */,
 				51FB4B3516DEC06A00D4623B /* generic.png */,
 				5126FB3E16D2EBC1007246D8 /* first.png */,
@@ -353,13 +370,32 @@
 			name = ASIHTTP;
 			sourceTree = "<group>";
 		};
+		5182025F16FBF8DC00F6E979 /* Maps */ = {
+			isa = PBXGroup;
+			children = (
+				5182026016FBF90000F6E979 /* HackerMapViewController.h */,
+				5182026116FBF90000F6E979 /* HackerMapViewController.m */,
+				5182026216FBF90000F6E979 /* HackerSpaceAnnotation.h */,
+				5182026316FBF90000F6E979 /* HackerSpaceAnnotation.m */,
+			);
+			name = Maps;
+			sourceTree = "<group>";
+		};
 		51DAF8AF16D583FF0019C046 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				5167432A16E6673700B664C3 /* MBProgressHUD.h */,
+				5167432B16E6673700B664C3 /* MBProgressHUD.m */,
+				51FFAF2816D69FDE0012992A /* DownloadRequest.h */,
+				51FFAF2916D69FDE0012992A /* DownloadRequest.m */,
+				5167432416E5A70600B664C3 /* STKeychain.h */,
+				5167432516E5A70600B664C3 /* STKeychain.m */,
 				51DAF8B016D584510019C046 /* Notifications.h */,
 				51DAF8B116D584510019C046 /* Notifications.m */,
 				51FFAF2516D68E5E0012992A /* NSDate+HSMTYFormats.h */,
 				51FFAF2616D68E5E0012992A /* NSDate+HSMTYFormats.m */,
+				5167432716E6653F00B664C3 /* PushEnablerRequest.h */,
+				5167432816E6653F00B664C3 /* PushEnablerRequest.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -371,6 +407,8 @@
 				5109DC7B16E10F8D00D9E823 /* SpaceSelectorController.m */,
 				5109DC7D16E1106D00D9E823 /* SpaceSelectorNavigationController.h */,
 				5109DC7E16E1106D00D9E823 /* SpaceSelectorNavigationController.m */,
+				5103534716E557A10038E5F9 /* SpaceSelectionCell.h */,
+				5103534816E557A10038E5F9 /* SpaceSelectionCell.m */,
 			);
 			name = "Space Selector";
 			sourceTree = "<group>";
@@ -479,6 +517,12 @@
 				51FBDEB816DFD7410006744A /* HSMTYTabBarController.m in Sources */,
 				5109DC7C16E10F8D00D9E823 /* SpaceSelectorController.m in Sources */,
 				5109DC7F16E1106D00D9E823 /* SpaceSelectorNavigationController.m in Sources */,
+				5103534916E557A10038E5F9 /* SpaceSelectionCell.m in Sources */,
+				5167432616E5A70600B664C3 /* STKeychain.m in Sources */,
+				5167432916E6653F00B664C3 /* PushEnablerRequest.m in Sources */,
+				5167432C16E6673800B664C3 /* MBProgressHUD.m in Sources */,
+				5182026416FBF90000F6E979 /* HackerMapViewController.m in Sources */,
+				5182026516FBF90000F6E979 /* HackerSpaceAnnotation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

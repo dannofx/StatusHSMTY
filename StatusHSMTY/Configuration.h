@@ -14,4 +14,6 @@
 +(NSString *)currentSpaceName;
 +(void)setCurrentSpaceAPIURL:(NSString *)spaceURL;
 +(NSString *)currentSpaceAPIURL;
++(void)setPushToken:(NSString *)token;
++(NSString *)pushToken;
 @end

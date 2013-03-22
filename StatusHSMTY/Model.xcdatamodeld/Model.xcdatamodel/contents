@@ -21,6 +21,7 @@
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="closedIconPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="closedIconURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="following" optional="YES" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="iconPath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="iconURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="lastchange" optional="YES" attributeType="Date" syncable="YES"/>
@@ -39,6 +40,6 @@
     <elements>
         <element name="Contact" positionX="475" positionY="99" width="128" height="90"/>
         <element name="Event" positionX="475" positionY="333" width="128" height="195"/>
-        <element name="HackerSpaceInfo" positionX="160" positionY="192" width="128" height="300"/>
+        <element name="HackerSpaceInfo" positionX="160" positionY="192" width="128" height="315"/>
     </elements>
 </model>

@@ -142,7 +142,6 @@
 {
     if(controller!=nil)
     {
-        [controller viewWillUnload];
         [controller.view removeFromSuperview];
         //[controller removeFromParentViewController];
         controller=nil;

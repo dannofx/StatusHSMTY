@@ -28,3 +28,10 @@
 "Description no available" = "Descripción no dispobible.";
 "Date no available" = "Date no available";
 "No available" = "No available";
+"espereactualizacion" = "Espere a que termine la actualización.";
+"Nofollowing" = "No following";
+"Following" = "Following";
+"proximosEventos" = "Próximos eventos";
+"entradasSalidas" = "Entradas - Salidas";
+"procesando" = "Procesando";
+"noPushPossible" = "No es posible realizar esta operacion si no activa las notificaciones en el telefono y/o no tiene acceso a internet.";

@@ -8,6 +8,7 @@
 
 #import "Configuration.h"
 #import "GlobalConstants.h"
+#import "STKeychain.h"
 
 @implementation Configuration
 
@@ -25,6 +26,20 @@
 }
 +(NSString *)currentSpaceAPIURL{
     return [[NSUserDefaults standardUserDefaults] objectForKey:KEY_SPACEURL_SETTINGS];
+}
+
+
++(void)setPushToken:(NSString *)token
+{
+    if(token)
+        [STKeychain storeUsername:PUSH_TOKEN_KEY andPassword:token forServiceName:PUSH_TOKEN_KEYCHAIN updateExisting:YES error:nil];
+    else
+        [STKeychain deleteItemForUsername:PUSH_TOKEN_KEY andServiceName:PUSH_TOKEN_KEYCHAIN error:nil];
+
+}
++(NSString *)pushToken
+{
+    return [STKeychain getPasswordForUsername:PUSH_TOKEN_KEY andServiceName:PUSH_TOKEN_KEYCHAIN error:nil];
 }
 
 @end

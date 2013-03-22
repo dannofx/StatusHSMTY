@@ -22,10 +22,16 @@
 
 -(void)launchContentUpdate;
 -(void)launchContentUpdateWithURL:(NSString *)hackersURL;
+-(void)launchSpaceListUpdate;
+-(void)launchUpdateForPushToken:(NSString *)pushToken;
+-(void)launchTokenRemoval;
+-(void)showSpaceSelector;
+
 
 -(void)eraseFileFromDisk:(NSString *)path;
 -(void)saveImageToDisk:(UIImage *)assignedImage withPath:(NSString *)path;
 -(void)saveIDataToDisk:(NSData *)data withPath:(NSString *)path;
+-(void)saveCoreData;
 -(void)addDownloadItemRequest:(DownloadRequest *)request;
 -(void)removeDownloadObserver:(id)observer;
 

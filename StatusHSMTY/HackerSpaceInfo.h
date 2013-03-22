@@ -22,14 +22,15 @@
 @property (nonatomic) float lat;
 @property (nonatomic) float lon;
 @property (nonatomic) BOOL open;
+@property (nonatomic) BOOL following;
 @property (nonatomic, retain) NSString * openIconPath;
 @property (nonatomic, retain) NSString * openIconURL;
 @property (nonatomic, retain) NSString * spaceName;
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSString * url_status;
 @property (nonatomic, retain) NSString * status;
-@property (nonatomic, retain) NSSet *contacts;
-@property (nonatomic, retain) NSSet *events;
+@property (nonatomic, retain) NSSet * contacts;
+@property (nonatomic, retain) NSSet * events;
 @property (nonatomic,readonly) NSDate * lastChangeDate;
 @property (nonatomic)UIImage * openImage;
 @property (nonatomic)UIImage * closeImage;

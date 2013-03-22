@@ -78,8 +78,9 @@
     [fetchRequest setEntity:entity];
     [fetchRequest setFetchBatchSize:10];
     
+    NSSortDescriptor *sortDescriptorByType = [[NSSortDescriptor alloc] initWithKey:@"checkEvent" ascending:YES];
     NSSortDescriptor *sortDescriptorByDate = [[NSSortDescriptor alloc] initWithKey:@"time" ascending:NO];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorByDate,nil];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorByType,sortDescriptorByDate,nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
     
      NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hackerSpace == %@", hackerSpace];
@@ -89,7 +90,7 @@
     NSString * cacheName=@"EventContent";
     NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
                                                                                                 managedObjectContext:self.coreDataContext
-                                                                                                  sectionNameKeyPath:nil cacheName:cacheName];
+                                                                                                  sectionNameKeyPath:@"checkEvent" cacheName:cacheName];
     
     
     [NSFetchedResultsController deleteCacheWithName:cacheName];
@@ -109,10 +110,23 @@
 
 #pragma mark - Table view data source
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.fetchedResultsController sections] objectAtIndex:section];
+    NSString * nativeName=[sectionInfo name];
+    if([nativeName isEqualToString:@"0"])
+        nativeName=NSLocalizedString(@"proximosEventos", @"Próximos eventos");
+    else
+        nativeName=NSLocalizedString(@"entradasSalidas",@"Entradas - Salidas");
+    
+    return nativeName;
+}
+
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if(self.fetchedResultsController==nil)
         return 0;
+    
     return [[self.fetchedResultsController sections] count];
 }
 

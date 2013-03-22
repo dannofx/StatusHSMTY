@@ -23,10 +23,12 @@
 @dynamic lat;
 @dynamic lon;
 @dynamic open;
+@dynamic following;
 @dynamic openIconPath;
 @dynamic openIconURL;
 @dynamic spaceName;
 @dynamic url;
+@dynamic url_status;
 @dynamic status;
 @dynamic contacts;
 @dynamic events;

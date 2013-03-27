@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MessageUI.h>
 #import "HSMTYViewController.h"
 
-@interface ContactViewController : HSMTYViewController<NSFetchedResultsControllerDelegate,UIActionSheetDelegate>
+@interface ContactViewController : HSMTYViewController<NSFetchedResultsControllerDelegate,UIActionSheetDelegate,MFMailComposeViewControllerDelegate>
 
 @end

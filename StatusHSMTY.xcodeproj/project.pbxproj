@@ -56,6 +56,9 @@
 		5167432C16E6673800B664C3 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 5167432B16E6673700B664C3 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5182026416FBF90000F6E979 /* HackerMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5182026116FBF90000F6E979 /* HackerMapViewController.m */; };
 		5182026516FBF90000F6E979 /* HackerSpaceAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5182026316FBF90000F6E979 /* HackerSpaceAnnotation.m */; };
+		519E6F0716FE578D00CEC099 /* HSWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 519E6F0616FE578D00CEC099 /* HSWebViewController.m */; };
+		519E6F0916FE948300CEC099 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 519E6F0816FE948300CEC099 /* MessageUI.framework */; };
+		519E6F0B16FE9AC300CEC099 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 519E6F0A16FE9AC300CEC099 /* AddressBook.framework */; };
 		51DAF8B216D584510019C046 /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 51DAF8B116D584510019C046 /* Notifications.m */; };
 		51E8E5B716D3E29C0077BC9E /* StatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51E8E5B616D3E29C0077BC9E /* StatusViewController.m */; };
 		51E8E5BA16D3E2BC0077BC9E /* EventsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51E8E5B916D3E2BC0077BC9E /* EventsListViewController.m */; };
@@ -153,6 +156,10 @@
 		5182026116FBF90000F6E979 /* HackerMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HackerMapViewController.m; sourceTree = "<group>"; };
 		5182026216FBF90000F6E979 /* HackerSpaceAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HackerSpaceAnnotation.h; sourceTree = "<group>"; };
 		5182026316FBF90000F6E979 /* HackerSpaceAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HackerSpaceAnnotation.m; sourceTree = "<group>"; };
+		519E6F0516FE578D00CEC099 /* HSWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HSWebViewController.h; sourceTree = "<group>"; };
+		519E6F0616FE578D00CEC099 /* HSWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HSWebViewController.m; sourceTree = "<group>"; };
+		519E6F0816FE948300CEC099 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		519E6F0A16FE9AC300CEC099 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		51DAF8B016D584510019C046 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
 		51DAF8B116D584510019C046 /* Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notifications.m; sourceTree = "<group>"; };
 		51E8E5B516D3E29C0077BC9E /* StatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusViewController.h; sourceTree = "<group>"; };
@@ -182,6 +189,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				519E6F0B16FE9AC300CEC099 /* AddressBook.framework in Frameworks */,
+				519E6F0916FE948300CEC099 /* MessageUI.framework in Frameworks */,
 				5141214916D83B570017E7ED /* CoreLocation.framework in Frameworks */,
 				5141214716D83AE20017E7ED /* MapKit.framework in Frameworks */,
 				514B624F16D3F5D900A4CA4E /* MobileCoreServices.framework in Frameworks */,
@@ -223,6 +232,8 @@
 		5126FB1416D2EBC1007246D8 = {
 			isa = PBXGroup;
 			children = (
+				519E6F0A16FE9AC300CEC099 /* AddressBook.framework */,
+				519E6F0816FE948300CEC099 /* MessageUI.framework */,
 				5141214816D83B570017E7ED /* CoreLocation.framework */,
 				5141214616D83AE20017E7ED /* MapKit.framework */,
 				514B624E16D3F5D900A4CA4E /* MobileCoreServices.framework */,
@@ -396,6 +407,8 @@
 				51FFAF2616D68E5E0012992A /* NSDate+HSMTYFormats.m */,
 				5167432716E6653F00B664C3 /* PushEnablerRequest.h */,
 				5167432816E6653F00B664C3 /* PushEnablerRequest.m */,
+				519E6F0516FE578D00CEC099 /* HSWebViewController.h */,
+				519E6F0616FE578D00CEC099 /* HSWebViewController.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -523,6 +536,7 @@
 				5167432C16E6673800B664C3 /* MBProgressHUD.m in Sources */,
 				5182026416FBF90000F6E979 /* HackerMapViewController.m in Sources */,
 				5182026516FBF90000F6E979 /* HackerSpaceAnnotation.m in Sources */,
+				519E6F0716FE578D00CEC099 /* HSWebViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,6 +7,7 @@
 //
 
 #import "ContactViewController.h"
+#import <AddressBook/AddressBook.h>
 #import "HackerSpaceInfo.h"
 #import "ContentManager.h"
 #import "Configuration.h"
@@ -136,19 +137,39 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     currentContact=[self.fetchedResultsController objectAtIndexPath:indexPath];
-    NSString *actionSheetTitle = @"What do you want to do?"; //Action Sheet Title
-    NSString *destructiveTitle = @"Cancel"; //Action Sheet Button Titles
-    NSString *other1 = @"Copy";
+    
+    if([currentContact.contactType isEqualToString:@"email"]||
+       [currentContact.contactType isEqualToString:@"Mailing list"])
+    {
+        [self sendEmail];
+        
+    }else if([currentContact.contactType isEqualToString:@"Telephone" ]||
+             [currentContact.contactType isEqualToString:@"keymaster"]||
+             [currentContact.contactType isEqualToString:@"keymasters"])
+    {
+        NSString *actionSheetTitle = @"What do you want to do?"; //Action Sheet Title
+        NSString *cancelTitle = @"Cancel"; //Action Sheet Button Titles
+        NSString *copyTitle = @"Copy";
+        NSString *addContactTitle = @"Add contact";
+        
+        UIActionSheet *actionSheet = [[UIActionSheet alloc]
+                                      initWithTitle:actionSheetTitle
+                                      delegate:self
+                                      cancelButtonTitle:cancelTitle
+                                      destructiveButtonTitle:nil
+                                      otherButtonTitles:addContactTitle,copyTitle, nil];
+        actionSheet.delegate=self;
+        [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    
+    }else
+    {
+        [self copyToClipboard];
+        currentContact=nil;
+    }
+    
 
-    NSString *cancelTitle = @"Cancel Button";
-    UIActionSheet *actionSheet = [[UIActionSheet alloc]
-                                  initWithTitle:actionSheetTitle
-                                  delegate:self
-                                  cancelButtonTitle:cancelTitle
-                                  destructiveButtonTitle:destructiveTitle
-                                  otherButtonTitles:other1, nil];
-    [actionSheet showInView:self.view];
 }
 
 
@@ -208,7 +229,7 @@
 {
     if(hackerSpace)
         [self.coreDataContext refreshObject:hackerSpace mergeChanges:NO];
-    
+    currentContact=nil;
     hackerSpace=(HackerSpaceInfo *)[self.coreDataContext objectWithID:coreDataID];
     __fetchedResultsController=nil;
     [self.tableView reloadData];
@@ -217,14 +238,98 @@
 #pragma mark - Action Sheet delegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if(buttonIndex==0)
+    if(buttonIndex==1)
     {
-        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-        pasteboard.string = currentContact.contactData;
-        [Notifications launchInformationBox:nil message:@"Your data was copied to your clipboard"];
+        [self copyToClipboard];
+    }else if (buttonIndex==0)
+    {
+        [self addToContacts];
     }
     
     currentContact=nil;
     
+}
+
+#pragma mark - Email Delegate
+- (void)mailComposeController:(MFMailComposeViewController*)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError*)error
+{
+    switch (result)
+    {
+        case MFMailComposeResultCancelled:
+            NSLog(@"Mail cancelled");
+            break;
+        case MFMailComposeResultSaved:
+            NSLog(@"Mail saved");
+            break;
+        case MFMailComposeResultSent:
+            NSLog(@"Mail send");
+            break;
+        case MFMailComposeResultFailed:
+        default:
+            [Notifications launchErrorBox:nil message:@"Mail failed: the email message was not saved or queued, possibly due to an error."];
+            break;
+    }
+    // Remove the mail view
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Actions
+-(void)copyToClipboard
+{
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.string = currentContact.contactData;
+    [Notifications launchInformationBox:nil message:@"Your data was copied to your clipboard"];
+    currentContact=nil;
+}
+-(void)sendEmail
+{
+    if ([MFMailComposeViewController canSendMail])
+    {
+        MFMailComposeViewController *mailer = [[MFMailComposeViewController alloc] init];
+        mailer.mailComposeDelegate = self;
+        NSArray *toRecipients = [NSArray arrayWithObjects:currentContact.contactData, nil];
+        [mailer setToRecipients:toRecipients];
+
+        [self presentViewController:mailer animated:YES completion:nil];
+
+    }
+    else
+    {
+        [Notifications launchErrorBox:nil message:@"Your device doesn't support the composer sheet"];
+    }
+    currentContact=nil;
+    
+}
+-(void)addToContacts
+{
+    CFErrorRef error = NULL;
+    
+    ABAddressBookRef iPhoneAddressBook = ABAddressBookCreate();
+    
+    ABRecordRef newPerson = ABPersonCreate();
+    
+    ABRecordSetValue(newPerson, kABPersonFirstNameProperty, hackerSpace.spaceName, &error);
+
+    
+    ABMutableMultiValueRef multiPhone =     ABMultiValueCreateMutable(kABMultiStringPropertyType);
+    ABMultiValueAddValueAndLabel(multiPhone, people.phone, kABPersonPhoneMainLabel, NULL);
+    ABMultiValueAddValueAndLabel(multiPhone, people.other, kABOtherLabel, NULL);
+    ABRecordSetValue(newPerson, kABPersonPhoneProperty, multiPhone,nil);
+    CFRelease(multiPhone);
+    // ...
+    // Set other properties
+    // ...
+    ABAddressBookAddRecord(iPhoneAddressBook, newPerson, &error);
+    
+    ABAddressBookSave(iPhoneAddressBook, &error);
+    CFRelease(newPerson);
+    CFRelease(iPhoneAddressBook);
+    if (error != NULL)
+    {
+        CFStringRef errorDesc = CFErrorCopyDescription(error);
+        NSLog(@"Contact not saved: %@", errorDesc);
+        CFRelease(errorDesc);        
+    }
+
 }
 @end

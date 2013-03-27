@@ -16,11 +16,20 @@
 #import "Configuration.h"
 #import "Reachability.h"
 #import "HackerMapViewController.h"
+#import "HSWebViewController.h"
 #import <MapKit/MapKit.h>
+
+#ifndef STATUSIDEN
+#define STATUSIDEN
+#define INDEX_WEBVIEW 2
+#define MAP_SEGUE @"showmapssegue"
+#define WEBVIEW_SEGUE @"webviewsegue"
+#endif
 
 @interface StatusViewController ()
 {
     HackerSpaceInfo * hackerSpace;
+    UIActionSheet *actionSheet;
 }
 
 -(void)setLogoViewInLodingState:(BOOL)loadingState;
@@ -259,7 +268,7 @@
 
 -(BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
 {
-    if([identifier isEqualToString:@"showmapssegue"])
+    if([identifier isEqualToString:MAP_SEGUE])
     {
         return (hackerSpace!=nil&&hackerSpace.url!=nil);
         
@@ -268,7 +277,7 @@
 }
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([segue.identifier isEqualToString:@"showmapssegue"])
+    if([segue.identifier isEqualToString:MAP_SEGUE])
     {
         HackerMapViewController * mapViewController=segue.destinationViewController;
         mapViewController.longitude=hackerSpace.lon;
@@ -276,6 +285,63 @@
         mapViewController.titleLocation=hackerSpace.spaceName;
         mapViewController.subtitle=hackerSpace.address;
         
+    }else if([segue.identifier isEqualToString:WEBVIEW_SEGUE])
+    {
+        HSWebViewController * hswebController=segue.destinationViewController;
+        hswebController.urlAddress=hackerSpace.url;
+        
+    }
+}
+
+#pragma mark - Web Action Sheet
+-(IBAction)launchWebActionSheet
+{
+    NSString *actionSheetTitle = @"What do you want to do?"; //Action Sheet Title
+    NSString *cancelTitle = @"Cancel"; //Action Sheet Button Titles
+    NSString *openWebTitle = @"Open web page";
+    NSString *copyToCBTitle= @"Copy to clipboard";
+
+    if(actionSheet==nil)
+    {
+       actionSheet = [[UIActionSheet alloc]
+                                      initWithTitle:actionSheetTitle
+                                      delegate:self
+                                      cancelButtonTitle:cancelTitle
+                                      destructiveButtonTitle:nil
+                                      otherButtonTitles:openWebTitle,copyToCBTitle, nil];
+        actionSheet.delegate=self;
+    }
+    [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    
+}
+
+#pragma mark - Action Sheet delegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
+    switch (buttonIndex) {
+        case 0:
+        {
+            [self performSegueWithIdentifier:WEBVIEW_SEGUE sender:self];
+        }
+        break;
+        case 1:
+        default:
+        {
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            pasteboard.string = hackerSpace.url;
+        }
+        break;
+    }
+
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(INDEX_WEBVIEW==indexPath.section)
+    {
+        [self launchWebActionSheet];
+    
     }
 }
 

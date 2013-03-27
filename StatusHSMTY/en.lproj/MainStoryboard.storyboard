@@ -223,11 +223,53 @@
                         <outlet property="statusLabel" destination="IxL-xG-ZgR" id="IOU-Qo-wAK"/>
                         <outlet property="statusMessageLabel" destination="0DB-h9-tiQ" id="CPz-Ox-x1G"/>
                         <outlet property="status_activityIndicator" destination="J2E-iY-FTW" id="2QO-vg-OPa"/>
+                        <segue destination="rbY-2h-3fo" kind="modal" identifier="webviewsegue" id="1tk-HE-l9I"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eb4-pS-d39" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="776" y="-628"/>
+        </scene>
+        <!--Web View Controller-->
+        <scene sceneID="87I-Hg-EPl">
+            <objects>
+                <viewController id="rbY-2h-3fo" customClass="HSWebViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="XYo-gK-sbe">
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kRj-gU-s2X">
+                                <items>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="pnY-yC-F8W"/>
+                                    <barButtonItem style="done" systemItem="done" id="hgb-fF-3NY">
+                                        <connections>
+                                            <action selector="hide:" destination="rbY-2h-3fo" id="cGo-CW-3JV"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WLl-IN-lC3">
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            </webView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="WLl-IN-lC3" firstAttribute="leading" secondItem="XYo-gK-sbe" secondAttribute="leading" type="default" id="Jfl-sP-D35"/>
+                            <constraint firstItem="kRj-gU-s2X" firstAttribute="leading" secondItem="XYo-gK-sbe" secondAttribute="leading" type="default" id="LRk-Ug-pi5"/>
+                            <constraint firstItem="kRj-gU-s2X" firstAttribute="trailing" secondItem="XYo-gK-sbe" secondAttribute="trailing" type="default" id="Nri-hG-V4s"/>
+                            <constraint firstItem="WLl-IN-lC3" firstAttribute="top" secondItem="kRj-gU-s2X" secondAttribute="bottom" type="default" id="P1G-Aq-7od"/>
+                            <constraint firstItem="WLl-IN-lC3" firstAttribute="bottom" secondItem="XYo-gK-sbe" secondAttribute="bottom" type="default" id="P3t-ON-aX3"/>
+                            <constraint firstItem="kRj-gU-s2X" firstAttribute="top" secondItem="XYo-gK-sbe" secondAttribute="top" type="default" id="fds-f6-Kdg"/>
+                            <constraint firstItem="WLl-IN-lC3" firstAttribute="trailing" secondItem="XYo-gK-sbe" secondAttribute="trailing" type="default" id="yPF-bU-NQO"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="WLl-IN-lC3" id="X2X-gA-Gbq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CcQ-lH-KHK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1295" y="-506"/>
         </scene>
         <!--Hacker Map View Controller-->
         <scene sceneID="S1a-0z-eeI">
@@ -280,7 +322,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mWb-Wz-AvY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1267" y="-628"/>
+            <point key="canvasLocation" x="1302" y="-1279"/>
         </scene>
         <!--Events List View Controller - Item-->
         <scene sceneID="j8z-CC-TTA">
@@ -621,6 +663,13 @@
             <relationships>
                 <relationship kind="action" name="performUpdate:"/>
                 <relationship kind="action" name="selectSpace:"/>
+            </relationships>
+        </class>
+        <class className="HSWebViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/HSWebViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="hide:"/>
+                <relationship kind="outlet" name="webView" candidateClass="UIWebView"/>
             </relationships>
         </class>
         <class className="HackerMapViewController" superclassName="UIViewController">

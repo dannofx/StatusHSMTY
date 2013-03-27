@@ -88,7 +88,7 @@
 //    USRINFO_CDOBJID_KEY,
 //    spaceName,USRINFO_SPACE_KEY, nil];
 //    NSManagedObjectID * cdObjectID=[userInfo ]
-
+    
 }
 
 -(void)spaceWasUpdatedWithName:(NSString *)spaceName coreDataID:(NSManagedObjectID *)coreDataID

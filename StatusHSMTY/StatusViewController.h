@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "HSMTYViewController.h"
 
-@interface StatusViewController : HSMTYViewController;
+@interface StatusViewController : HSMTYViewController<UIActionSheetDelegate>;
 
 @property (nonatomic,retain) IBOutlet UILabel* statusLabel;
 @property (nonatomic,retain) IBOutlet UILabel * statusMessageLabel;

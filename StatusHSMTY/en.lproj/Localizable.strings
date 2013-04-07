@@ -35,3 +35,4 @@
 "entradasSalidas" = "Entradas - Salidas";
 "procesando" = "Procesando";
 "noPushPossible" = "No es posible realizar esta operacion si no activa las notificaciones en el telefono y/o no tiene acceso a internet.";
+"contacterror" = "Tal vez tengas que dar permisos en la seccion de ajustes de tu telefono para acceder a contactos.";

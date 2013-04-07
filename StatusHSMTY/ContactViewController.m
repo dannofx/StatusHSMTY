@@ -7,7 +7,6 @@
 //
 
 #import "ContactViewController.h"
-#import <AddressBook/AddressBook.h>
 #import "HackerSpaceInfo.h"
 #import "ContentManager.h"
 #import "Configuration.h"
@@ -140,7 +139,7 @@
     
     currentContact=[self.fetchedResultsController objectAtIndexPath:indexPath];
     
-    if([currentContact.contactType isEqualToString:@"email"]||
+    if([currentContact.contactType isEqualToString:@"E-Mail"]||
        [currentContact.contactType isEqualToString:@"Mailing list"])
     {
         [self sendEmail];
@@ -278,7 +277,7 @@
 {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = currentContact.contactData;
-    [Notifications launchInformationBox:nil message:@"Your data was copied to your clipboard"];
+    [Notifications launchInformationBox:nil message:@"Data was copied to the clipboard"];
     currentContact=nil;
 }
 -(void)sendEmail
@@ -302,34 +301,111 @@
 }
 -(void)addToContacts
 {
-    CFErrorRef error = NULL;
-    
-    ABAddressBookRef iPhoneAddressBook = ABAddressBookCreate();
-    
-    ABRecordRef newPerson = ABPersonCreate();
-    
-    ABRecordSetValue(newPerson, kABPersonFirstNameProperty, hackerSpace.spaceName, &error);
+    // Fetch the address book
 
-    
-    ABMutableMultiValueRef multiPhone =     ABMultiValueCreateMutable(kABMultiStringPropertyType);
-    ABMultiValueAddValueAndLabel(multiPhone, people.phone, kABPersonPhoneMainLabel, NULL);
-    ABMultiValueAddValueAndLabel(multiPhone, people.other, kABOtherLabel, NULL);
-    ABRecordSetValue(newPerson, kABPersonPhoneProperty, multiPhone,nil);
-    CFRelease(multiPhone);
-    // ...
-    // Set other properties
-    // ...
-    ABAddressBookAddRecord(iPhoneAddressBook, newPerson, &error);
-    
-    ABAddressBookSave(iPhoneAddressBook, &error);
-    CFRelease(newPerson);
-    CFRelease(iPhoneAddressBook);
-    if (error != NULL)
+    NSError *error = nil;
+    CFErrorRef cferror=NULL;
+    ABAddressBookRef addressBook = ABAddressBookCreateWithOptions(NULL, &cferror);
+    error=(__bridge NSError *)cferror;
+    if (error)
     {
-        CFStringRef errorDesc = CFErrorCopyDescription(error);
-        NSLog(@"Contact not saved: %@", errorDesc);
-        CFRelease(errorDesc);        
+        NSLog(@"%@", error);
+        [Notifications launchErrorBox:nil message:NSLocalizedString(@"contacterror", @"Tal vez tengas que dar permisos en la seccion de ajustes de tu telefono para acceder a contactos.")];
     }
+    // Search for the person named "Appleseed" in the address book
+    NSArray *people = (__bridge NSArray *)ABAddressBookCopyPeopleWithName(addressBook, CFSTR("John Smith"));
+    // Display "Appleseed" information if found in the address book
+    if ((people != nil) && [people count])
+    {
+        // Show an alert if "Appleseed" is not in Contacts
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                        message:@"Rhe contact already exists"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Cancel"
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    else
+    {
+        ABNewPersonViewController *picker = [[ABNewPersonViewController alloc] init];
+        picker.newPersonViewDelegate = self;
+        ABMutableMultiValueRef multiEmail = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+        ABMutableMultiValueRef multiPhone = ABMultiValueCreateMutable(kABMultiStringPropertyType);
+        
+        ABRecordRef newPerson = ABPersonCreate();
+        CFErrorRef error = NULL;
+        if(hackerSpace.spaceName)
+            ABRecordSetValue(newPerson, kABPersonFirstNameProperty, (__bridge CFStringRef)hackerSpace.spaceName, &error);
+        ABRecordSetValue(newPerson, kABPersonLastNameProperty, CFSTR("Hackerspace"), &error);
+        
+        
+        for(Contact * contact in [self.fetchedResultsController fetchedObjects])
+        {
+            NSLog(@"%@",contact.contactType);
+            if([contact.contactType isEqualToString:@"E-Mail"]||
+            [contact.contactType isEqualToString:@"Mailing list"])
+            {
+                
+                ABMultiValueAddValueAndLabel(multiEmail, (__bridge CFStringRef)contact.contactData, kABWorkLabel, NULL);
+                ABRecordSetValue(newPerson, kABPersonEmailProperty, multiEmail, &error);
+                continue;
+                
+            }
+            else if([contact.contactType isEqualToString:@"Telephone"])
+            {
+                 ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFStringRef)contact.contactData, kABPersonPhoneMainLabel, NULL);
+                continue;
+                
+            }else if([contact.contactType isEqualToString:@"Key Master"]||
+                     [contact.contactType isEqualToString:@"keymasters"])
+            {
+                for(NSString * phone in [contact.contactData componentsSeparatedByString:@","])
+                    ABMultiValueAddValueAndLabel(multiPhone, (__bridge CFStringRef)phone, kABPersonPhoneMainLabel, NULL);
+                continue;
+                
+            }
+            
+            
+        }
 
+        ABRecordSetValue(newPerson, kABPersonPhoneProperty, multiPhone,nil);
+        
+        NSAssert( !error, @"Something bad happened here." );
+        
+        [picker setDisplayedPerson:newPerson];
+        
+        UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:picker];
+        [self presentViewController:navigation animated:YES completion:nil];
+        
+
+        CFRelease(multiEmail);
+        CFRelease(multiPhone);
+        
+    }
+    
+    CFRelease(addressBook);
 }
+#pragma mark ABNewPersonViewControllerDelegate methods
+// Dismisses the new-person view controller.
+- (void)newPersonViewController:(ABNewPersonViewController *)newPersonViewController didCompleteWithNewPerson:(ABRecordRef)person
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+#pragma mark ABUnknownPersonViewControllerDelegate methods
+// Dismisses the picker when users are done creating a contact or adding the displayed person properties to an existing contact.
+- (void)unknownPersonViewController:(ABUnknownPersonViewController *)unknownPersonView didResolveToPerson:(ABRecordRef)person
+{
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+// Does not allow users to perform default actions such as emailing a contact, when they select a contact property.
+- (BOOL)unknownPersonViewController:(ABUnknownPersonViewController *)personViewController shouldPerformDefaultActionForPerson:(ABRecordRef)person
+						   property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier
+{
+	return NO;
+}
+
 @end

@@ -154,8 +154,8 @@
         return;
     [self setInUpdateState:YES];
     [self activateLoadingNotifier:YES];
-    //NSURL *url = [NSURL URLWithString:hackersURL];
-    NSURL *url = [NSURL URLWithString:HSMTY_URL];
+    NSURL *url = [NSURL URLWithString:hackersURL];
+    //NSURL *url = [NSURL URLWithString:HSMTY_URL];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     [request setTimeOutSeconds:TIMEOUT_HIGH_PRIORITY];
     [request setDidFinishSelector:@selector(contentDownloadedSuccessfully:)];

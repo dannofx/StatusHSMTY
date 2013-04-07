@@ -30,6 +30,7 @@
 		5141214016D8288E0017E7ED /* CustomPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5141213F16D8288E0017E7ED /* CustomPageViewController.m */; };
 		5141214716D83AE20017E7ED /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5141214616D83AE20017E7ED /* MapKit.framework */; };
 		5141214916D83B570017E7ED /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5141214816D83B570017E7ED /* CoreLocation.framework */; };
+		51485CB01710DE81008FCB07 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51485CAF1710DE81008FCB07 /* AddressBookUI.framework */; };
 		514B620316D3E49800A4CA4E /* ContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 514B620216D3E49800A4CA4E /* ContactViewController.m */; };
 		514B620916D3E50300A4CA4E /* ContentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 514B620816D3E50300A4CA4E /* ContentManager.m */; };
 		514B620C16D3E56700A4CA4E /* HSMTYNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 514B620B16D3E56700A4CA4E /* HSMTYNavigationController.m */; };
@@ -107,6 +108,7 @@
 		5141213F16D8288E0017E7ED /* CustomPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPageViewController.m; sourceTree = "<group>"; };
 		5141214616D83AE20017E7ED /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		5141214816D83B570017E7ED /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		51485CAF1710DE81008FCB07 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
 		514B620116D3E49800A4CA4E /* ContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactViewController.h; sourceTree = "<group>"; };
 		514B620216D3E49800A4CA4E /* ContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactViewController.m; sourceTree = "<group>"; };
 		514B620716D3E50300A4CA4E /* ContentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentManager.h; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				51485CB01710DE81008FCB07 /* AddressBookUI.framework in Frameworks */,
 				519E6F0B16FE9AC300CEC099 /* AddressBook.framework in Frameworks */,
 				519E6F0916FE948300CEC099 /* MessageUI.framework in Frameworks */,
 				5141214916D83B570017E7ED /* CoreLocation.framework in Frameworks */,
@@ -232,11 +235,6 @@
 		5126FB1416D2EBC1007246D8 = {
 			isa = PBXGroup;
 			children = (
-				519E6F0A16FE9AC300CEC099 /* AddressBook.framework */,
-				519E6F0816FE948300CEC099 /* MessageUI.framework */,
-				5141214816D83B570017E7ED /* CoreLocation.framework */,
-				5141214616D83AE20017E7ED /* MapKit.framework */,
-				514B624E16D3F5D900A4CA4E /* MobileCoreServices.framework */,
 				5126FB2616D2EBC1007246D8 /* StatusHSMTY */,
 				5126FB1F16D2EBC1007246D8 /* Frameworks */,
 				5126FB1E16D2EBC1007246D8 /* Products */,
@@ -256,6 +254,12 @@
 			children = (
 				514B624C16D3F50A00A4CA4E /* libxml2.dylib */,
 				514B624A16D3F4FD00A4CA4E /* libz.dylib */,
+				51485CAF1710DE81008FCB07 /* AddressBookUI.framework */,
+				519E6F0A16FE9AC300CEC099 /* AddressBook.framework */,
+				519E6F0816FE948300CEC099 /* MessageUI.framework */,
+				5141214816D83B570017E7ED /* CoreLocation.framework */,
+				5141214616D83AE20017E7ED /* MapKit.framework */,
+				514B624E16D3F5D900A4CA4E /* MobileCoreServices.framework */,
 				514B624816D3F4E600A4CA4E /* CoreData.framework */,
 				514B624616D3F4DF00A4CA4E /* SystemConfiguration.framework */,
 				514B624416D3F4D900A4CA4E /* Security.framework */,

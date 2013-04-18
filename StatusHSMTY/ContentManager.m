@@ -171,16 +171,15 @@
     {
     NSArray * spaces=[self allSpacesEnabledForPush];
     workingToken=pushToken;
-  
-     for(HackerSpaceInfo * space in spaces)
-     {
-         PushEnablerRequest * request=[PushEnablerRequest requestToAddURL:space.url_status];
-         [request setDelegate:self];
-         [request setDidFinishSelector:@selector(enableRequestIsFinished:)];
-         [request setDidFailSelector:@selector(enableRequestFailed:)];
-         [networkPushQueue addOperation:request];
-         
-     }
+        
+
+
+        PushEnablerRequest * request=[PushEnablerRequest requestToAddToken:workingToken WithURLs:spaces];
+        [request setDelegate:self];
+        [request setDidFinishSelector:@selector(enableRequestIsFinished:)];
+        [request setDidFailSelector:@selector(enableRequestFailed:)];
+        [networkPushQueue addOperation:request];
+        
         [networkPushQueue go];
     }
 }
@@ -188,8 +187,8 @@
 {
     PushEnablerRequest *request = [PushEnablerRequest requestToDeleteToken];
     [request setTimeOutSeconds:TIMEOUT_HIGH_PRIORITY];
-    [request setDidFinishSelector:@selector(contentDownloadedSuccessfully:)];
-    [request setDidFailSelector:@selector(contentDownloadFailed:)];
+    [request setDidFinishSelector:@selector(pushTokenRemovalSuccessfull:)];
+    [request setDidFailSelector:@selector(pushTokenRemovalFailed:)];
     [request setDelegate:self];
     [request startAsynchronous];
 

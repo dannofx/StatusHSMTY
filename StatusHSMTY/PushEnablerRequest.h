@@ -10,8 +10,9 @@
 
 @interface PushEnablerRequest : ASIHTTPRequest
 
-+(PushEnablerRequest *)requestToDeleteURL:(NSString *)url;
-+(PushEnablerRequest *)requestToAddURL:(NSString *)url;
++(PushEnablerRequest *)requestToModifyURL:(NSString *)url add:(BOOL)add;
++(PushEnablerRequest *)requestToAddToken: (NSString *)token WithURLs:(NSArray *)spaces;
 +(PushEnablerRequest *)requestToDeleteToken;
 +(BOOL)isPossibleEnablePush;
+
 @end

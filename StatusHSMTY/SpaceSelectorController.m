@@ -321,9 +321,10 @@
         waitComponent=[MBProgressHUD showHUDAddedTo:self.view animated:YES];
         waitComponent.labelText=NSLocalizedString(@"procesando",@"Procesando");
         
+
         updatingIndexPath=indexPath;
         PushEnablerRequest * request;
-        request=value?[PushEnablerRequest requestToAddURL:hs.url_status]:[PushEnablerRequest requestToDeleteURL:hs.url_status];
+        request=[PushEnablerRequest requestToModifyURL:hs.url_status add:value];
         [request setDidFinishSelector:@selector(pushRequestPostedSuccessfully:)];
         [request setDidFailSelector:@selector(pushRequestPostFailed:)];
         [request setDelegate:self];

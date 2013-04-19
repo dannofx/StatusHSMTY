@@ -10,6 +10,7 @@
 #import "HackerSpaceInfo.h"
 #import "Configuration.h"
 #import "Reachability.h"
+#import "GlobalConstants.h"
 
 @implementation PushEnablerRequest
 
@@ -18,7 +19,7 @@
 {
 
     NSString * token=[Configuration pushToken];
-    NSString * urlString= [NSString stringWithFormat:@"http://api.hsmty.org/idevice/%@",token];
+    NSString * urlString= [NSString stringWithFormat:@"%@/%@",PUSH_ADDRESS,token];
     NSURL *urlSpace = [NSURL URLWithString:urlString];
     PushEnablerRequest * request=[self requestWithURL:urlSpace];
     [request setTimeOutSeconds:30.0];
@@ -38,12 +39,12 @@
     [request setRequestMethod:@"POST"];
     
     
-    return nil;
+    return request;
 
 }
 +(PushEnablerRequest *)requestToAddToken: (NSString *)token WithURLs:(NSArray *)spaces
 {
-    NSString * urlString= [NSString stringWithFormat:@"http://api.hsmty.org/idevice/%@",token];
+    NSString * urlString= [NSString stringWithFormat:@"%@/%@",PUSH_ADDRESS,token];
     NSURL *url = [NSURL URLWithString:urlString];
     PushEnablerRequest * request=[self requestWithURL:url];
     [request setTimeOutSeconds:30.0];
@@ -67,12 +68,12 @@
     [request setRequestMethod:@"PUT"];
 
     
-    return nil;
+    return request;
 }
 +(PushEnablerRequest *)requestToDeleteToken
 {
     NSString * token=[Configuration pushToken];
-    NSString * urlString= [NSString stringWithFormat:@"http://api.hsmty.org/idevice/%@",token];
+    NSString * urlString= [NSString stringWithFormat:@"%@/%@",PUSH_ADDRESS,token];
     NSURL *url = [NSURL URLWithString:urlString];
     PushEnablerRequest * request=[self requestWithURL:url];
     [request setTimeOutSeconds:31.0];

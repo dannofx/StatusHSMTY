@@ -8,8 +8,9 @@
 
 #ifndef MePaparazzo_GlobalConstants_h
 #define MePaparazzo_GlobalConstants_h
-//#define HSMTY_URL @"http://hsmty.org/status.json"
-#define HSMTY_URL @"http://192.168.0.114/~danno/status.json"
+#define HSMTY_URL @"http://hsmty.org/status.json"
+//#define HSMTY_URL @"http://192.168.0.114/~danno/status.json"
+#define PUSH_ADDRESS @"http://api.hsmty.org/idevice"
 #define SPACE_UPDATE_NOTIFICATION_NAME @"currentSpaceUpdate"
 #define SPACELIST_UPDATE_NOTIFICATION_NAME @"spaceListUpdate"
 #define LIST_SPACES_URL @"http://openspace.slopjong.de/directory.json"

@@ -34,6 +34,8 @@
 		NSDictionary* dictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsRemoteNotificationKey];
 		if (dictionary != nil)
 		{
+            [Configuration setCurrentSpaceAPIURL:@"miurl"];
+            [self launchSpaceUpdateNotificationWithURL:@"miurl"];
 			NSLog(@"Launched from push notification: %@", dictionary);
 			//[self addMessageFromRemoteNotification:dictionary updateUI:NO];
 		}
@@ -152,8 +154,8 @@
 
 - (void)application:(UIApplication*)application didReceiveRemoteNotification:(NSDictionary*)userInfo
 {
-
     NSString* urlValue = [userInfo valueForKey:@"url"];
+    [Configuration setCurrentSpaceAPIURL:urlValue];
     [self launchSpaceUpdateNotificationWithURL:urlValue];
 }
 

@@ -21,7 +21,7 @@
 @interface ContentManager()
 {
     ASINetworkQueue * networkDownloadQueue;
-    ASINetworkQueue * networkPushQueue;
+
     NSString * workingToken;
 }
     @property (nonatomic,assign) NSManagedObjectContext * coreDataContext;
@@ -104,13 +104,6 @@
     [networkDownloadQueue setDelegate:self];
     [networkDownloadQueue setRequestDidFailSelector:@selector(downloadQueueFailed:)];
     
-    networkPushQueue=[[ASINetworkQueue alloc] init];
-    networkPushQueue.showAccurateProgress=YES;
-    [networkPushQueue setDownloadProgressDelegate:self];
-    [networkPushQueue setDelegate:self];
-    [networkPushQueue setRequestDidFailSelector:@selector(pushQueueFailed:)];
-    [networkPushQueue setRequestDidFinishSelector:@selector(pushQueueFinish:)];
-    
     [self setInUpdateState:NO];
 }
 
@@ -169,18 +162,14 @@
 {
     if(workingToken==nil)
     {
-    NSArray * spaces=[self allSpacesEnabledForPush];
-    workingToken=pushToken;
+        NSArray * spaces=[self allSpacesEnabledForPush];
+        workingToken=pushToken;
         
-
-
         PushEnablerRequest * request=[PushEnablerRequest requestToAddToken:workingToken WithURLs:spaces];
         [request setDelegate:self];
         [request setDidFinishSelector:@selector(enableRequestIsFinished:)];
         [request setDidFailSelector:@selector(enableRequestFailed:)];
-        [networkPushQueue addOperation:request];
-        
-        [networkPushQueue go];
+        [request startAsynchronous];
     }
 }
 -(void)launchTokenRemoval
@@ -247,11 +236,11 @@
 {
     //TODO: Implement
 }
--(void)pushQueueFailed:(ASIHTTPRequest *)request
+-(void)enableRequestFailed:(ASIHTTPRequest *)request
 {
     workingToken=nil;
 }
--(void)pushQueueFinish:(ASIHTTPRequest *)request
+-(void)enableRequestIsFinished:(ASIHTTPRequest *)request
 {
     [Configuration setPushToken:workingToken];
     workingToken=nil;
@@ -264,14 +253,6 @@
 -(void)pushTokenRemovalFailed:(PushEnablerRequest *)request
 {
      //TODO: Implement
-}
--(void)enableRequestIsFinished:(PushEnablerRequest *)request
-{
-    //TODO: Implement
-}
--(void)enableRequestFailed:(PushEnablerRequest *)request
-{
-   //TODO:Implement
 }
 
 -(HackerSpaceInfo *)createHackerSpaceWithName:(NSString *)spaceName

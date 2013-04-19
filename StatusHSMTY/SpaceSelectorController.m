@@ -126,8 +126,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     static NSString * cellIdentifier=@"selectionItemCell";
+
     SpaceSelectionCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
 
     HackerSpaceInfo * hs=[self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -311,6 +311,8 @@
     {
         NSString * message=NSLocalizedString(@"noPushPossible", @"No es posible realizar esta operacion si no activa las notificaciones en el telefono y/o no tiene acceso a internet.");
         [Notifications launchErrorBox:nil message:message];
+        SpaceSelectionCell * cell = (SpaceSelectionCell *)[self.tableView cellForRowAtIndexPath:indexPath] ;
+        cell.followingSwitch.on=!value;
         
         return;
     }

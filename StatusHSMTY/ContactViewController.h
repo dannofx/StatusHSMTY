@@ -10,8 +10,10 @@
 #import <MessageUI/MessageUI.h>
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
+#import "ContactCell.h"
 #import "HSMTYViewController.h"
 
-@interface ContactViewController : HSMTYViewController<NSFetchedResultsControllerDelegate,UIActionSheetDelegate,MFMailComposeViewControllerDelegate,ABNewPersonViewControllerDelegate>
+@interface ContactViewController : HSMTYViewController<NSFetchedResultsControllerDelegate,UIActionSheetDelegate,MFMailComposeViewControllerDelegate,ABNewPersonViewControllerDelegate,
+    ContactCellDelegate>
 
 @end

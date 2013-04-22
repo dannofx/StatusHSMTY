@@ -148,7 +148,7 @@
     [self setInUpdateState:YES];
     [self activateLoadingNotifier:YES];
     NSURL *url = [NSURL URLWithString:hackersURL];
-    //NSURL *url = [NSURL URLWithString:HSMTY_URL];
+    
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     [request setTimeOutSeconds:TIMEOUT_HIGH_PRIORITY];
     [request setDidFinishSelector:@selector(contentDownloadedSuccessfully:)];
@@ -341,6 +341,24 @@
     }
 
 }
+-(NSString *)contactImageNameForType:(NSString *)type
+{
+    if([type isEqualToString:@"ml"])
+        return @"contact-mail.png";
+    else if( [type isEqualToString:@"phone"])
+        return @"contact-phone.png";
+    else if( [type isEqualToString:@"twitter"])
+        return @"contact-twitter.png";
+    else if( [type isEqualToString:@"facebook"])
+        return @"contact-facebook.png";
+    else if( [type isEqualToString:@"email"])
+        return @"contact-mail.png";
+    else if( [type isEqualToString:@"keymaster"])
+        return @"contact-phone.png";
+    else
+        return @"contact-other.png";
+    
+}
 -(NSString *)contactTypeNameForType:(NSString *)type
 {
     if([type isEqualToString:@"ml"])
@@ -416,7 +434,7 @@
 }
 -(void)updateCurrentSpaceWithData:(NSDictionary *)dictionary
 {
-    NSLog(@"Mi diccionario %@",dictionary);
+
     NSString *spaceName=[dictionary valueForKey:@"space"];
     [Configuration setCurrentSpaceName:spaceName];
     HackerSpaceInfo * spaceInfo=[self preparedSpaceForUpdateWithName:spaceName];
@@ -442,6 +460,7 @@
         for(NSString * key in contactKeys)
         {
             
+            NSString * contactImage=[self contactImageNameForType:key];
             NSString * contactType=[self contactTypeNameForType:key];
             Contact * contact =[NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Contact class]) inManagedObjectContext:self.coreDataContext];
             if([[contactDictionary valueForKey:key] isKindOfClass:[NSArray class]])
@@ -461,6 +480,7 @@
             else
                 contact.contactData=[contactDictionary valueForKey:key];
             contact.contactType=contactType;
+            contact.contactLogo=contactImage;
             contact.hackerspace=spaceInfo;
         }
     
@@ -471,32 +491,40 @@
 
             Event * event=[NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Event class]) inManagedObjectContext:self.coreDataContext];
             
-            BOOL checkEvent=([[eventDictionary valueForKey:@"type"] isEqualToString:@"check-in"]||[[eventDictionary valueForKey:@"type"] isEqualToString:@"check-out"]);
-            event.checkEvent=checkEvent;
             event.attendant=[eventDictionary valueForKey:@"name"];
             event.time=[[eventDictionary valueForKey:@"t"] integerValue];
             event.extra=[eventDictionary valueForKey:@"extra"];
             NSString *urlImage=[eventDictionary valueForKey:@"image"];
+            
+            if([[eventDictionary valueForKey:@"type"] isEqualToString:@"check-in"])
+            {
+                event.type=EVENT_TYPE_CHECKIN;
+                NSString * type=@"Check-in: ";
+                event.name=[type stringByAppendingString:event.attendant];
+                event.standarEvent=YES;
+            }
+            else if([[eventDictionary valueForKey:@"type"] isEqualToString:@"check-out"])
+            {
+                event.type=EVENT_TYPE_CHECKOUT;
+                NSString * type=@"Check-out: ";
+                event.name=[type stringByAppendingString:event.attendant];
+                event.standarEvent=YES;
+            }
+            else
+            {
+                event.type=EVENT_TYPE_CUSTOM;
+                event.name=[eventDictionary valueForKey:@"name"];
+                event.start=[[eventDictionary valueForKey:@"start"] integerValue];
+                event.end=[[eventDictionary valueForKey:@"end"] integerValue];
+                event.standarEvent=NO;
+            }
+            
             if(urlImage)
             {
                 event.imageURL=[eventDictionary valueForKey:@"image"];
                 event.imagePath=[self createImageFilePathForSpaceName:spaceName];
             }
             
-            if(checkEvent)
-            {
-                NSString * type=([[eventDictionary valueForKey:@"type"] isEqualToString:@"check-in"])?@"Check-in: ":@"Check-out: ";
-                event.name=[type stringByAppendingString:event.attendant];
-                
-
-            }else
-            {
-                event.name=[eventDictionary valueForKey:@"name"];
-                event.start=[[eventDictionary valueForKey:@"start"] integerValue];
-                event.end=[[eventDictionary valueForKey:@"end"] integerValue];
-                
-
-            }
             event.hackerSpace=spaceInfo;
             
         }

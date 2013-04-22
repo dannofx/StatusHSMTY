@@ -15,6 +15,7 @@
 
 @property (nonatomic, retain) NSString * contactType;
 @property (nonatomic, retain) NSString * contactData;
+@property (nonatomic, retain) NSString * contactLogo;
 @property (nonatomic, retain) HackerSpaceInfo *hackerspace;
 
 @end

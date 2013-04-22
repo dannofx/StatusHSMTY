@@ -2,7 +2,7 @@
 //  Event.m
 //  StatusHSMTY
 //
-//  Created by Danno on 2/26/13.
+//  Created by Danno on 21/04/13.
 //  Copyright (c) 2013 Danno. All rights reserved.
 //
 
@@ -13,13 +13,15 @@
 
 @implementation Event
 
+
 @dynamic attendant;
 @dynamic start;
 @dynamic end;
 @dynamic time;
 @dynamic name;
 @dynamic extra;
-@dynamic checkEvent;
+@dynamic type;
+@dynamic standarEvent;
 @dynamic hackerSpace;
 @dynamic startDate;
 @dynamic endDate;
@@ -72,41 +74,43 @@
     else
         [[ContentManager contentManager] eraseFileFromDisk:self.imagePath];
 }
+
+
 /*
--(NSString *)humanTime
-{
-    NSString * timeString=@"";
-    NSInteger remainingTime=self.time;
-    NSInteger days=remainingTime/(60*60*24);
-    remainingTime=remainingTime%(60*60*24);
-    NSInteger hours=remainingTime/(60*60);
-    remainingTime=remainingTime%(60*60);
-    NSInteger minutes=remainingTime/60;
-    remainingTime=remainingTime%60;
-    NSInteger seconds=remainingTime;
-    
-    if(days!=0)
-    {
-        timeString=[timeString stringByAppendingFormat:@"%d %@",days,NSLocalizedString(@"days",@"days")];
-    }
-    if(hours!=0)
-    {
-        timeString=[timeString stringByAppendingFormat:@"%d %@",hours,NSLocalizedString(@"hours",@"hours")];
-    }
-    if(minutes!=0)
-    {
-        timeString=[timeString stringByAppendingFormat:@"%d %@",minutes,NSLocalizedString(@"minutes",@"minutes")];
-    }
-    if(seconds>0)
-    {
-        timeString=[timeString stringByAppendingFormat:@"%d %@",seconds,NSLocalizedString(@"seconds",@"seconds")];
-    }
-    else
-    {
-        timeString=[timeString stringByAppendingFormat:@"0 %@",NSLocalizedString(@"seconds",@"seconds")];
-    }
-    
-    return timeString;
-}*/
+ -(NSString *)humanTime
+ {
+ NSString * timeString=@"";
+ NSInteger remainingTime=self.time;
+ NSInteger days=remainingTime/(60*60*24);
+ remainingTime=remainingTime%(60*60*24);
+ NSInteger hours=remainingTime/(60*60);
+ remainingTime=remainingTime%(60*60);
+ NSInteger minutes=remainingTime/60;
+ remainingTime=remainingTime%60;
+ NSInteger seconds=remainingTime;
+ 
+ if(days!=0)
+ {
+ timeString=[timeString stringByAppendingFormat:@"%d %@",days,NSLocalizedString(@"days",@"days")];
+ }
+ if(hours!=0)
+ {
+ timeString=[timeString stringByAppendingFormat:@"%d %@",hours,NSLocalizedString(@"hours",@"hours")];
+ }
+ if(minutes!=0)
+ {
+ timeString=[timeString stringByAppendingFormat:@"%d %@",minutes,NSLocalizedString(@"minutes",@"minutes")];
+ }
+ if(seconds>0)
+ {
+ timeString=[timeString stringByAppendingFormat:@"%d %@",seconds,NSLocalizedString(@"seconds",@"seconds")];
+ }
+ else
+ {
+ timeString=[timeString stringByAppendingFormat:@"0 %@",NSLocalizedString(@"seconds",@"seconds")];
+ }
+ 
+ return timeString;
+ }*/
 
 @end

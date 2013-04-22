@@ -14,6 +14,7 @@
 
 @dynamic contactType;
 @dynamic contactData;
+@dynamic contactLogo;
 @dynamic hackerspace;
 
 @end

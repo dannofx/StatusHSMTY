@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2057" systemVersion="12C60" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12C60" minimumToolsVersion="Xcode 4.3" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="Contact" representedClassName="Contact" syncable="YES">
         <attribute name="contactData" attributeType="String" syncable="YES"/>
+        <attribute name="contactLogo" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="contactType" attributeType="String" syncable="YES"/>
         <relationship name="hackerspace" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="HackerSpaceInfo" inverseName="contacts" inverseEntity="HackerSpaceInfo" syncable="YES"/>
     </entity>
     <entity name="Event" representedClassName="Event" syncable="YES">
         <attribute name="attendant" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="checkEvent" attributeType="Boolean" syncable="YES"/>
         <attribute name="end" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="extra" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imagePath" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="standarEvent" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="start" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="time" attributeType="Date" syncable="YES"/>
+        <attribute name="type" attributeType="Integer 16" syncable="YES"/>
         <relationship name="hackerSpace" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="HackerSpaceInfo" inverseName="events" inverseEntity="HackerSpaceInfo" syncable="YES"/>
     </entity>
     <entity name="HackerSpaceInfo" representedClassName="HackerSpaceInfo" syncable="YES">
@@ -38,8 +40,8 @@
         <relationship name="events" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Event" inverseName="hackerSpace" inverseEntity="Event" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Contact" positionX="475" positionY="99" width="128" height="90"/>
-        <element name="Event" positionX="475" positionY="333" width="128" height="195"/>
-        <element name="HackerSpaceInfo" positionX="160" positionY="192" width="128" height="315"/>
+        <element name="Contact" positionX="0" positionY="0" width="128" height="105"/>
+        <element name="Event" positionX="0" positionY="0" width="128" height="210"/>
+        <element name="HackerSpaceInfo" positionX="0" positionY="0" width="128" height="315"/>
     </elements>
 </model>

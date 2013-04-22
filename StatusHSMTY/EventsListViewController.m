@@ -7,6 +7,7 @@
 //
 
 #import "EventsListViewController.h"
+#import "NSDate+HSMTYFormats.h"
 #import "HackerSpaceInfo.h"
 #import "ContentManager.h"
 #import "Configuration.h"
@@ -78,9 +79,9 @@
     [fetchRequest setEntity:entity];
     [fetchRequest setFetchBatchSize:10];
     
-    NSSortDescriptor *sortDescriptorByType = [[NSSortDescriptor alloc] initWithKey:@"checkEvent" ascending:YES];
+    NSSortDescriptor *sortDescriptorByStandar = [[NSSortDescriptor alloc] initWithKey:@"standarEvent" ascending:YES];
     NSSortDescriptor *sortDescriptorByDate = [[NSSortDescriptor alloc] initWithKey:@"time" ascending:NO];
-    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorByType,sortDescriptorByDate,nil];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortDescriptorByStandar,sortDescriptorByDate,nil];
     [fetchRequest setSortDescriptors:sortDescriptors];
     
      NSPredicate *predicate = [NSPredicate predicateWithFormat:@"hackerSpace == %@", hackerSpace];
@@ -88,9 +89,8 @@
     
     // Create the fetched results controller
     NSString * cacheName=@"EventContent";
-    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                                                managedObjectContext:self.coreDataContext
-                                                                                                  sectionNameKeyPath:@"checkEvent" cacheName:cacheName];
+    NSFetchedResultsController *aFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:self.coreDataContext
+                                                sectionNameKeyPath:@"standarEvent" cacheName:cacheName];
     
     
     [NSFetchedResultsController deleteCacheWithName:cacheName];
@@ -140,51 +140,79 @@
     
 }
 
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if(indexPath.section==0)
+    {
+        return SPECIAL_ROW_HEIGHT;
+    }
+    else
+    {
+        return REGULAR_ROW_HEIGHT;
+    }
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
     static NSString * cellIdentifier=@"eventItemCell";
-    EventCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    Event * event=[self.fetchedResultsController objectAtIndexPath:indexPath];
-    
-    if (cell == nil) {
-        cell = [[EventCell alloc] initWithStyle:UITableViewCellStyleValue2
-                                           reuseIdentifier:cellIdentifier] ;
+    static NSString * specialCellIdentifier=@"specialEventItemCell";
+    EventCell *cell ;
+    if(indexPath.section==0)
+    {
+        cell= [tableView dequeueReusableCellWithIdentifier:specialCellIdentifier];
+        if (cell == nil)
+            cell = [[EventCell alloc] initWithStyle:UITableViewCellStyleValue2
+                                    reuseIdentifier:specialCellIdentifier] ;
+        
+    }
+    else{
+        cell=[tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+        if (cell == nil)
+            cell = [[EventCell alloc] initWithStyle:UITableViewCellStyleValue2
+                                    reuseIdentifier:cellIdentifier] ;
     }
     
+    Event * event=[self.fetchedResultsController objectAtIndexPath:indexPath];    
     //setea datos
     cell.eventNameLabel.text=event.name;
-    
-    if(event.checkEvent)
+    if(event.type==EVENT_TYPE_CHECKIN||event.type==EVENT_TYPE_CHECKOUT)
     {
-            [cell setDate:event.timeDate];
+        cell.dateLabel.text=[event.timeDate stringDateWithShortFormat];
+        if(event.type==EVENT_TYPE_CHECKIN)
+            cell.imageView.image=[UIImage imageNamed:@"entradamini.png"];
+        else
+            cell.imageView.image=[UIImage imageNamed:@"salidamini.png"];
         
     }
     else
-        [cell setDate:event.startDate];
-    
-    ContentManager * contentManager=[ContentManager contentManager];
-    [contentManager removeDownloadObserver:cell];
-    cell.imagePath=event.imagePath;
-    
-    UIImage * eventImage=event.image;
-    if(eventImage==nil)
     {
-        cell.imageView.image=[UIImage imageNamed:@"generic.png"];
-        if(event.imageURL)
+        ContentManager * contentManager=[ContentManager contentManager];
+        [contentManager removeDownloadObserver:cell];
+        cell.imagePath=event.imagePath;
+        [cell addBorder];
+        cell.dateLabel.text=[event.startDate stringDateWithCompleteFormat];
+        
+        UIImage * eventImage=event.image;
+        if(eventImage==nil)
         {
-            DownloadRequest * request=[DownloadRequest requestForFileAt:event.imageURL savingOn:event.imagePath];
-            request.downloadObserver=cell;
-            request.tag=START_TAG_FOR_EVENT_IMAGES+indexPath.row;
-            request.finishObserverSelector=@selector(imageDownloadFinishedSuccessfully:);
+            #warning Agregar imagen generica para los eventos
+            #warning Falta splash image de inicio
+            cell.imageView.image=[UIImage imageNamed:@"entradamini"];
+            if(event.imageURL)
+            {
+                DownloadRequest * request=[DownloadRequest requestForFileAt:event.imageURL savingOn:event.imagePath];
+                request.downloadObserver=cell;
+                request.tag=START_TAG_FOR_EVENT_IMAGES+indexPath.row;
+                request.finishObserverSelector=@selector(imageDownloadFinishedSuccessfully:);
 
-            [contentManager addDownloadItemRequest:request];
+                [contentManager addDownloadItemRequest:request];
+            }
+        }else{
+            cell.imageView.image=eventImage;
+
         }
-    }else{
-        cell.imageView.image=eventImage;
-
     }
-    
+
 
     return cell;
 }
@@ -197,8 +225,10 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if(![self isUpdating])
     {
+        NSInteger carrouselIndex=[self globalIndexFromIndexPath:indexPath];
+        NSLog(@"SeBUSCARA %d",carrouselIndex);
         [self.navigationController pushViewController:self.carrouselViewController animated:YES];
-        [self.carrouselViewController moveToIndex:indexPath.row animated:NO];
+        [self.carrouselViewController moveToIndex:carrouselIndex animated:NO];
     }
     else{
         [Notifications launchErrorBox:nil message:NSLocalizedString(@"espereaactualizacion",@"Espere a que termine la actualización para ver contenido.")];
@@ -264,11 +294,56 @@
 -(UIViewController *) controllerForIndex:(int)index{
     
     DetailedEventViewController * detailVC=[self.storyboard instantiateViewControllerWithIdentifier:@"detailItemEvent"];
-    NSIndexPath * indexPath=[NSIndexPath indexPathForRow:index inSection:0];
+    NSIndexPath *indexPath=[self indexPathForCarrouselIndex:index];
     detailVC.event=[self.fetchedResultsController objectAtIndexPath:indexPath];
     return detailVC;
     
+}
+-(NSInteger)globalIndexFromIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger reachedIndex=0;
+    NSInteger lastSection=0;
     
+    for(id <NSFetchedResultsSectionInfo> sectionInfo  in [self.fetchedResultsController sections])
+    {
+        if(lastSection==indexPath.section)
+        {
+            reachedIndex+=indexPath.row;
+            break;
+        }
+        else{
+            reachedIndex+=[sectionInfo numberOfObjects];
+
+        }
+        lastSection++;
+    }
+    return reachedIndex;
+    
+}
+-(NSIndexPath *)indexPathForCarrouselIndex:(NSInteger)index
+{
+    NSInteger reachedIndex=0;
+    NSInteger foundIndex=0;
+    NSInteger lastSection=0;
+    
+    for(id <NSFetchedResultsSectionInfo> sectionInfo  in [self.fetchedResultsController sections])
+    {
+        NSInteger elementsPerSection=[sectionInfo numberOfObjects];
+        if(((reachedIndex+elementsPerSection)-1)<index)
+        {
+            reachedIndex+=elementsPerSection;
+             lastSection++;
+        }
+        else
+        {
+            foundIndex=index-reachedIndex;
+            //se busca
+        }
+       
+    }
+    
+    NSLog(@"Se busca %d se encuentra con index %d seccion %d",index,foundIndex,lastSection);
+    return [NSIndexPath indexPathForRow:foundIndex inSection:lastSection];
 }
 -(void)didShowController:(UIViewController *)controller atIndex:(int)index{
     

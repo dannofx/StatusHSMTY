@@ -152,8 +152,12 @@
     {
         HackerSpaceInfo * hs=[self.fetchedResultsController objectAtIndexPath:indexPath];
         [Configuration setCurrentSpaceName:hs.spaceName];
-        [Configuration setCurrentSpaceAPIURL:hs.url_status];
-        [[ContentManager contentManager] launchContentUpdateWithURL:hs.url_status];
+//        [Configuration setCurrentSpaceAPIURL:hs.url_status];
+//        [[ContentManager contentManager] launchContentUpdateWithURL:hs.url_status];
+//        
+        [Configuration setCurrentSpaceAPIURL:HSMTY_URL];
+        [[ContentManager contentManager] launchContentUpdateWithURL:HSMTY_URL];
+        
         [self dismissViewControllerAnimated:YES completion:nil];
     }
 }

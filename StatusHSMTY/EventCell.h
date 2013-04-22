@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <QuartzCore/QuartzCore.h>
 #import "DownloadRequest.h"
 
 @interface EventCell : UITableViewCell
@@ -16,8 +17,7 @@
 @property (nonatomic,retain) IBOutlet UIImageView * imageView;
 @property (nonatomic,retain) NSString * imagePath;
 
--(void)setDate:(NSDate *)date;
--(void)setTimeHumanValue:(NSString *)time;
 -(void)imageDownloadFinishedSuccessfully:(DownloadRequest *)request;
+-(void)addBorder;
 
 @end

@@ -9,7 +9,12 @@
 #import "EventCell.h"
 #import "NSDate+HSMTYFormats.h"
 
+@interface EventCell()
+{
+    BOOL borderAdded;
+}
 
+@end
 @implementation EventCell
 
 @synthesize eventNameLabel;
@@ -25,6 +30,14 @@
     }
     return self;
 }
+-(id)initWithCoder:(NSCoder *)aDecoder
+{ self = [super initWithCoder:aDecoder];
+    if (self) {
+        borderAdded=FALSE;
+    }
+    return self;
+
+}
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
@@ -33,23 +46,22 @@
     // Configure the view for the selected state
 }
 
--(void)setDate:(NSDate *)date{
-    
-    NSString * format=NSLocalizedString(@"Start:", @"Start");
-    NSString * dateString=(date!=nil)?[date stringDateWithShortFormat]:NSLocalizedString(@"Date no available",@"Fecha no disponible");
-    self.dateLabel.text=[NSString stringWithFormat:format,dateString];
-}
 
--(void)setTimeHumanValue:(NSString *)time
-{
-    NSString * timeString=NSLocalizedString(@"Since:", @"Since");
-    self.dateLabel.text=[timeString stringByAppendingString:time];
-}
 
 
 -(void)imageDownloadFinishedSuccessfully:(DownloadRequest *)request
 {
     self.imageView.image=[UIImage imageWithContentsOfFile:self.imagePath];
+}
+-(void)addBorder
+{
+    if(!borderAdded)
+    {
+        borderAdded=YES;
+        self.imageView.layer.borderColor=[[UIColor lightGrayColor] CGColor];
+        self.imageView.layer.borderWidth=1.3;
+    }
+    
 }
 
 @end

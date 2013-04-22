@@ -36,12 +36,22 @@
     [self addBasicButtons];
 }
 
+-(void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    UIImageView *tempImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"fondo.png"]];
+    [tempImageView setFrame:self.tableView.frame];
+    self.tableView.backgroundView = tempImageView;
+}
+
 -(void)addBasicButtons
 {
     //Right buttons
     UIBarButtonItem * refreshButton=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(performUpdate:)];
-    UIBarButtonItem * selectButton=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemSearch target:self action:@selector(selectSpace:)];
+    UIBarButtonItem * selectButton=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"top-change.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(selectSpace:)];
     self.navigationItem.rightBarButtonItems = @[refreshButton,selectButton];
+    UIBarButtonItem * notificationsButton=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"top-alerts.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(selectSpace:)];
+    self.navigationItem.leftBarButtonItem=notificationsButton;
 
 }
 

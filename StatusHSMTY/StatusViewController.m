@@ -7,6 +7,7 @@
 //
 
 #import "StatusViewController.h"
+#import <QuartzCore/QuartzCore.h>
 #import "HackerSpaceInfo.h"
 #import "NSDate+HSMTYFormats.h"
 #import "ContentManager.h"
@@ -65,6 +66,13 @@
     hackerSpace=[[ContentManager contentManager] spaceInfoForName:[Configuration currentSpaceName]];
     [self performLoadOperations];
    
+}
+
+-(void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    self.logoImageView.layer.borderColor=[[UIColor lightGrayColor] CGColor];
+    self.logoImageView.layer.borderWidth=1.0;
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -171,9 +179,6 @@
     
 }
 
-
-
-
 -(void)imageDownloadFinishedSuccessfully:(DownloadRequest *)request
 {    switch (request.tag) {
         case DOWNLOAD_TAG_LOGOIMAGE:
@@ -210,12 +215,12 @@
             
         case DOWNLOAD_TAG_CLOSEDIMAGE:
             [self setStatusViewInLodingState:NO];
-            //self.statusImageView.image=[UIImage imageNamed:@"noavailablestatus.png"];
+            self.statusImageView.image=[UIImage imageNamed:@"cerrado.png"];
             break;
             
         case DOWNLOAD_TAG_OPENIMAGE:
             [self setStatusViewInLodingState:NO];
-            //self.statusImageView.image=[UIImage imageNamed:@"noavailablestatus.png"];
+            self.statusImageView.image=[UIImage imageNamed:@"abierto.png"];
             break;
             
         default:
@@ -227,11 +232,11 @@
 -(IBAction)showLocationInMap:(id)sender
 {
 
-    NSLog(@"Show me the map!!");
+    [self performSegueWithIdentifier:MAP_SEGUE sender:self];
 }
 -(IBAction)showWebSite:(id)sender
 {
-    NSLog(@"Show me your website, baby!!!");
+    [self launchWebActionSheet];
 }
 
 #pragma mark - Space updates
@@ -338,11 +343,7 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(INDEX_WEBVIEW==indexPath.section)
-    {
-        [self launchWebActionSheet];
-    
-    }
+
 }
 
 @end

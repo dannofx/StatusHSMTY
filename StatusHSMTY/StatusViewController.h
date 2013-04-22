@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "HSMTYViewController.h"
+#import "HSLabel.h"
 
 @interface StatusViewController : HSMTYViewController<UIActionSheetDelegate>;
 
 @property (nonatomic,retain) IBOutlet UILabel* statusLabel;
 @property (nonatomic,retain) IBOutlet UILabel * statusMessageLabel;
-@property (nonatomic,retain) IBOutlet UILabel * addressLabel;
+@property (nonatomic,retain) IBOutlet HSLabel * addressLabel;
 @property (nonatomic,retain) IBOutlet UILabel *spaceNameLabel;
 @property (nonatomic,retain) IBOutlet UILabel *epochLabel;
 @property (nonatomic,retain) IBOutlet UIImageView * logoImageView;

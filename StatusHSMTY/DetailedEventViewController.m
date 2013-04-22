@@ -7,6 +7,7 @@
 //
 
 #import "DetailedEventViewController.h"
+#import <QuartzCore/QuartzCore.h>
 #import "ContentManager.h"
 #import "DownloadRequest.h"
 #import "NSDate+HSMTYFormats.h"
@@ -24,6 +25,7 @@
 @synthesize dateInit_label;
 @synthesize description_label;
 @synthesize imageView;
+@synthesize checkImageView;
 @synthesize imageActivityIndicator;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -39,11 +41,11 @@
 {
     [super viewDidLoad];
 
-    
+    self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:[UIImage imageNamed:@"fondo.png"]];
     [self setImageViewInLoadingState:NO];
 
     self.name_label.text=self.event.name;
-    if(self.event.checkEvent)
+    if(self.event.type==EVENT_TYPE_CHECKIN||self.event.type==EVENT_TYPE_CHECKOUT)
     {
         NSString * dateString=(self.event.time>0)?[self.event.timeDate stringDateWithCompleteFormat]:NSLocalizedString(@"Date no available" ,@"Fecha no disponible");
         self.dateInit_label.text=[NSLocalizedString(@"Since:", @"Since:") stringByAppendingString:dateString];
@@ -61,7 +63,7 @@
     if(self.event.extra)
         self.description_label.text=self.event.extra;
     else
-        self.description_label.text=NSLocalizedString(@"Description no available", @"Description no available");
+        self.description_label.text=@"";
     
     UIImage * image=event.image;
     if(image==nil)
@@ -77,25 +79,47 @@
             [contentManager addDownloadItemRequest:request];
              [self setImageViewInLoadingState:YES];
         }else{
-           self.imageView.image=[UIImage imageNamed:@"generic.png"];
+
+            switch (self.event.type) {
+                case EVENT_TYPE_CHECKIN:
+                    self.checkImageView.image=[UIImage imageNamed:@"entrada.png"];
+                    break;
+                case EVENT_TYPE_CHECKOUT:
+                    self.checkImageView.image=[UIImage imageNamed:@"salida.png"];
+                    break;
+                default:
+#warning Falta la imagen generica para evento especial en grande y chica
+                    self.imageView.image=[UIImage imageNamed:@"entrada.png"];
+                    break;
+            }
+
         }
     }else{
         self.imageView.image=image;
+        [self addBorderImageView];
     }
 	
+}
+
+-(void)addBorderImageView
+{
+    self.imageView.layer.borderColor=[[UIColor lightGrayColor] CGColor];
+    self.imageView.layer.borderWidth=0.5;
 }
 
 -(void)imageDownloadFinishedSuccessfully:(DownloadRequest *)request
 {
     [self setImageViewInLoadingState:NO];
     self.imageView.image=self.event.image;
+    [self addBorderImageView];
 
 }
 
 -(void)imageDownloadFailed:(DownloadRequest *)request
 {
     [self setImageViewInLoadingState:NO];
-    //TODO: Default image
+#warning Defailt event image
+    self.checkImageView.image=[UIImage imageNamed:@"entrada.png"];
 }
 
 -(void)setImageViewInLoadingState:(BOOL)loadingState

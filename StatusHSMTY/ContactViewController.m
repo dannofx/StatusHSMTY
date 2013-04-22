@@ -13,12 +13,17 @@
 #import "Notifications.h"
 #import "Contact.h"
 #import "Notifications.h"
+#import "MBProgressHUD.h"
 
 @interface ContactViewController ()
 {
     HackerSpaceInfo * hackerSpace;
     Contact * currentContact;
 }
+
+
+-(BOOL) contactIsPhoneType:(Contact *)contact;
+-(BOOL)contactIsMailType:(Contact *)contact;
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
@@ -115,18 +120,27 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    static NSString * cellIdentifier=@"contactItemCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    static NSString * cellIdentifier=@"contactItem";
+    ContactCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     Contact * contact=[self.fetchedResultsController objectAtIndexPath:indexPath];
     
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue2
+        cell = [[ContactCell alloc] initWithStyle:UITableViewCellStyleSubtitle
                                 reuseIdentifier:cellIdentifier] ;
     }
     
-    //setea datos
-    cell.textLabel.text=contact.contactType;
-    cell.detailTextLabel.text=contact.contactData;
+    if([self contactIsMailType:contact])
+        cell.specialAction=SpecialActionMail;
+    else if([self contactIsPhoneType:contact])
+        cell.specialAction=SpecialActionPhone;
+    else
+        cell.specialAction=SpecialActionNone;
+        
+    cell.contactTypeLabel.text=contact.contactType;
+    cell.contactInfoLabel.text=contact.contactData;
+    cell.contactImageView.image=[UIImage imageNamed:contact.contactLogo];
+    cell.contactDelegate=self;
+    cell.index=indexPath;
     
     return cell;
 }
@@ -139,14 +153,11 @@
     
     currentContact=[self.fetchedResultsController objectAtIndexPath:indexPath];
     
-    if([currentContact.contactType isEqualToString:@"E-Mail"]||
-       [currentContact.contactType isEqualToString:@"Mailing list"])
+    if([self contactIsMailType:currentContact])
     {
         [self sendEmail];
         
-    }else if([currentContact.contactType isEqualToString:@"Telephone" ]||
-             [currentContact.contactType isEqualToString:@"keymaster"]||
-             [currentContact.contactType isEqualToString:@"keymasters"])
+    }else if([self contactIsPhoneType:currentContact])
     {
         NSString *actionSheetTitle = @"What do you want to do?"; //Action Sheet Title
         NSString *cancelTitle = @"Cancel"; //Action Sheet Button Titles
@@ -167,8 +178,22 @@
         [self copyToClipboard];
         currentContact=nil;
     }
-    
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 
+
+}
+
+-(BOOL) contactIsPhoneType:(Contact *)contact
+{
+    return [contact.contactType isEqualToString:@"Telephone" ]||
+    [contact.contactType isEqualToString:@"keymaster"]||
+    [contact.contactType isEqualToString:@"keymasters"];
+    
+}
+-(BOOL)contactIsMailType:(Contact *)contact
+{
+    return [contact.contactType isEqualToString:@"E-Mail"]||
+    [contact.contactType isEqualToString:@"Mailing list"];
 }
 
 
@@ -277,9 +302,37 @@
 {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = currentContact.contactData;
-    [Notifications launchInformationBox:nil message:@"Data was copied to the clipboard"];
+#warning Copiado imagen buena chiquita
+    MBProgressHUD * successfullDialog=[[MBProgressHUD alloc] initWithView:self.view];
+    [self.view addSubview:successfullDialog];
+    successfullDialog.customView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"copiado.png"]];
+    successfullDialog.mode=MBProgressHUDModeCustomView;
+    
+    //successfullDialog.frame=self.view.bounds;
+    successfullDialog.labelText=@"Data was copied to the clipboard";
+    
+    
+    //successfullDialog.graceTime=0.7;
+    [successfullDialog show:YES];
+    
+    
+    /**
+     [progressHUD removeFromSuperview];
+     progressHUD.frame=view.bounds;
+     [view addSubview:progressHUD];
+     }
+     
+     [progressHUD show:animated];
+     **/
+    
+    //[Notifications launchInformationBox:nil message:@"Data was copied to the clipboard"];
     currentContact=nil;
 }
+     
+- (void)waitForTwoSeconds:(HU)hud {
+         sleep(2);
+    [hud removeFromSuperview];
+     }
 -(void)sendEmail
 {
     if ([MFMailComposeViewController canSendMail])
@@ -406,6 +459,28 @@
 						   property:(ABPropertyID)property identifier:(ABMultiValueIdentifier)identifier
 {
 	return NO;
+}
+
+#pragma mark - ContactDelegate
+-(void)cellRequestForCopy:(NSIndexPath *)index
+{
+     currentContact=[self.fetchedResultsController objectAtIndexPath:index];
+    [self copyToClipboard];
+    
+}
+-(void)cellRequestForUserAction:(NSIndexPath *)index
+{
+    currentContact=[self.fetchedResultsController objectAtIndexPath:index];
+    
+    if([self contactIsMailType:currentContact])
+    {
+        [self sendEmail];
+        
+    }else if([self contactIsPhoneType:currentContact])
+    {
+        [self addToContacts];
+    }
+
 }
 
 @end

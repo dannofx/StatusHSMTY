@@ -14,6 +14,7 @@
 
 -(IBAction)performUpdate:(id)sender;
 -(IBAction)selectSpace:(id)sender;
+-(IBAction)manageAlerts:(id)sender;
 -(BOOL)isUpdating;
 
 -(void)spaceWasUpdatedWithName:(NSString *)spaceName coreDataID:(NSManagedObjectID *)coreDataID;

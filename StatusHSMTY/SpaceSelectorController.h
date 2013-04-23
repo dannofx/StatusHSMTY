@@ -11,9 +11,16 @@
 #import "SpaceSelectionCell.h"
 #import <CoreData/CoreData.h>
 
+typedef enum
+{
+    SelectionTypeSpace,
+    SelectionTypeAlert,
+}SelectionType;
+
 
 @interface SpaceSelectorController : HSMTYViewController<NSFetchedResultsControllerDelegate,UISearchDisplayDelegate,SpaceSelectionCellDelegate>
 
+@property (nonatomic) SelectionType selectionType;
 
 -(IBAction)cancel;
 -(IBAction)updateList;

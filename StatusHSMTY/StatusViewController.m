@@ -24,7 +24,6 @@
 #define STATUSIDEN
 #define INDEX_WEBVIEW 2
 #define MAP_SEGUE @"showmapssegue"
-#define WEBVIEW_SEGUE @"webviewsegue"
 #endif
 
 @interface StatusViewController ()
@@ -65,6 +64,7 @@
     [self setStatusViewInLodingState:NO];
     hackerSpace=[[ContentManager contentManager] spaceInfoForName:[Configuration currentSpaceName]];
     [self performLoadOperations];
+    self.title=@"Status";
    
 }
 

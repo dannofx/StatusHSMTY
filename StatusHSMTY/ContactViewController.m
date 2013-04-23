@@ -24,13 +24,15 @@
 
 -(BOOL) contactIsPhoneType:(Contact *)contact;
 -(BOOL)contactIsMailType:(Contact *)contact;
+-(void)hideSuccessfullCopyDialog;
 
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
-
+@property (nonatomic,readonly) MBProgressHUD *successfullCopyDialog;
 @end
 
 @implementation ContactViewController
 @synthesize fetchedResultsController=__fetchedResultsController;
+@synthesize successfullCopyDialog=_successfullCopyDialog;
 
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -45,6 +47,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title=@"Contact";
     hackerSpace=[[ContentManager contentManager] spaceInfoForName:[Configuration currentSpaceName]];
     
 }
@@ -55,6 +58,18 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(MBProgressHUD *)successfullCopyDialog
+{
+    if(_successfullCopyDialog==nil)
+    {
+        _successfullCopyDialog=[[MBProgressHUD alloc] initWithView:self.view];
+        [self.view addSubview:_successfullCopyDialog];
+        _successfullCopyDialog.customView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkcopy.png"]];
+        _successfullCopyDialog.mode=MBProgressHUDModeCustomView;
+        _successfullCopyDialog.labelText=@"Copied to clipboard";
+    }
+    return _successfullCopyDialog;
+}
 
 #pragma mark - Fetched results controller
 
@@ -297,42 +312,23 @@
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
+
 #pragma mark - Actions
 -(void)copyToClipboard
 {
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = currentContact.contactData;
-#warning Copiado imagen buena chiquita
-    MBProgressHUD * successfullDialog=[[MBProgressHUD alloc] initWithView:self.view];
-    [self.view addSubview:successfullDialog];
-    successfullDialog.customView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"copiado.png"]];
-    successfullDialog.mode=MBProgressHUDModeCustomView;
-    
-    //successfullDialog.frame=self.view.bounds;
-    successfullDialog.labelText=@"Data was copied to the clipboard";
-    
-    
-    //successfullDialog.graceTime=0.7;
-    [successfullDialog show:YES];
-    
-    
-    /**
-     [progressHUD removeFromSuperview];
-     progressHUD.frame=view.bounds;
-     [view addSubview:progressHUD];
-     }
-     
-     [progressHUD show:animated];
-     **/
-    
-    //[Notifications launchInformationBox:nil message:@"Data was copied to the clipboard"];
+
+    [self.view addSubview:self.successfullCopyDialog];
+    [self.successfullCopyDialog show:YES];
+    [self performSelector:@selector(hideSuccessfullCopyDialog) withObject:nil afterDelay:0.9];
     currentContact=nil;
 }
+-(void)hideSuccessfullCopyDialog
+{
+    [self.successfullCopyDialog hide:YES];
+}
      
-- (void)waitForTwoSeconds:(HU)hud {
-         sleep(2);
-    [hud removeFromSuperview];
-     }
 -(void)sendEmail
 {
     if ([MFMailComposeViewController canSendMail])

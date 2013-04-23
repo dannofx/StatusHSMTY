@@ -43,7 +43,7 @@
 {
     [super viewDidLoad];
     hackerSpace=[[ContentManager contentManager] spaceInfoForName:[Configuration currentSpaceName]];
-
+    self.title=@"Events";
 }
 
 - (void)didReceiveMemoryWarning
@@ -60,6 +60,7 @@
         _carrouselViewController.dataSource=self;
         _carrouselViewController.numberOfPages=[[self.fetchedResultsController fetchedObjects] count];
         _carrouselViewController.navigationItem.title=NSLocalizedString(@"Events",@"Events");
+        
         
     }
     return _carrouselViewController;
@@ -175,6 +176,9 @@
     Event * event=[self.fetchedResultsController objectAtIndexPath:indexPath];    
     //setea datos
     cell.eventNameLabel.text=event.name;
+#warning  TAMANIO DE FIGURITAS
+#warning INTERNACIONALIZACION
+
     if(event.type==EVENT_TYPE_CHECKIN||event.type==EVENT_TYPE_CHECKOUT)
     {
         cell.dateLabel.text=[event.timeDate stringDateWithShortFormat];
@@ -195,9 +199,8 @@
         UIImage * eventImage=event.image;
         if(eventImage==nil)
         {
-            #warning Agregar imagen generica para los eventos
-            #warning Falta splash image de inicio
-            cell.imageView.image=[UIImage imageNamed:@"entradamini"];
+
+            cell.imageView.image=[UIImage imageNamed:@"eventdefault.png"];
             if(event.imageURL)
             {
                 DownloadRequest * request=[DownloadRequest requestForFileAt:event.imageURL savingOn:event.imagePath];

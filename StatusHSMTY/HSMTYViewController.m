@@ -50,7 +50,7 @@
     UIBarButtonItem * refreshButton=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(performUpdate:)];
     UIBarButtonItem * selectButton=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"top-change.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(selectSpace:)];
     self.navigationItem.rightBarButtonItems = @[refreshButton,selectButton];
-    UIBarButtonItem * notificationsButton=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"top-alerts.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(selectSpace:)];
+    UIBarButtonItem * notificationsButton=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"top-alerts.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(manageAlerts:)];
     self.navigationItem.leftBarButtonItem=notificationsButton;
 
 }
@@ -79,10 +79,12 @@
 }
 -(IBAction)selectSpace:(id)sender
 {
-    [[ContentManager contentManager] showSpaceSelector];
-
+    [self performSegueWithIdentifier:@"spaceselectorsegue" sender:self];
 }
-
+-(IBAction)manageAlerts:(id)sender
+{
+    [self performSegueWithIdentifier:@"alertmanagementsegue" sender:self];
+}
 -(BOOL)isUpdating
 {
     return [ContentManager contentManager].updating;

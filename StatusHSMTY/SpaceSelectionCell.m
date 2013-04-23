@@ -12,12 +12,14 @@
 
 @synthesize delegate;
 @synthesize followingSwitch;
+@synthesize selectionImageView;
+@synthesize spaceNameLabel;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        [self addSwitch];
+        //[self initControls];
     }
     return self;
 }
@@ -26,37 +28,33 @@
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
-        [self addSwitch];
+        //[self initControls];
 
     }
     return self;
 }
 
--(void)addSwitch
-{
-    followingSwitch=[[UISwitch alloc] initWithFrame:CGRectZero];
-    [followingSwitch addTarget:self action:@selector(switchValueChanged:) forControlEvents:UIControlEventValueChanged];
-    
-    self.accessoryView=followingSwitch;
-
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
 
 -(IBAction)switchValueChanged:(id)sender
 {
-
     if(self.delegate)
     {
         NSIndexPath * indexPath=[(UITableView *)self.superview indexPathForCell:self];
         [self.delegate cellAtIndex:indexPath changeToValue:followingSwitch.on];
     }
+}
+
+
+-(void)configureForAlerts:(BOOL)manageAlerts
+{
+    self.selectionImageView.hidden=manageAlerts;
+    self.followingSwitch.hidden=!manageAlerts;
+
+    
+}
+-(void)setAsSelectedSpace:(BOOL)selected
+{
+    self.selectionImageView.image=(selected?[UIImage imageNamed:@"check.png"]:nil);
 }
 
 @end

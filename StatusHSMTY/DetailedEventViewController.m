@@ -88,8 +88,7 @@
                     self.checkImageView.image=[UIImage imageNamed:@"salida.png"];
                     break;
                 default:
-#warning Falta la imagen generica para evento especial en grande y chica
-                    self.imageView.image=[UIImage imageNamed:@"entrada.png"];
+                    self.imageView.image=[UIImage imageNamed:@"eventdefault.png"];
                     break;
             }
 
@@ -118,8 +117,7 @@
 -(void)imageDownloadFailed:(DownloadRequest *)request
 {
     [self setImageViewInLoadingState:NO];
-#warning Defailt event image
-    self.checkImageView.image=[UIImage imageNamed:@"entrada.png"];
+    self.checkImageView.image=[UIImage imageNamed:@"eventdefault.png"];
 }
 
 -(void)setImageViewInLoadingState:(BOOL)loadingState

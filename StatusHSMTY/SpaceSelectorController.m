@@ -27,6 +27,7 @@
 
 @implementation SpaceSelectorController
 @synthesize fetchedResultsController=__fetchedResultsController;
+@synthesize selectionType;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -137,8 +138,14 @@
         
     }
     cell.delegate=self;
+    [cell configureForAlerts:(SelectionTypeAlert==self.selectionType)];
+    //BOOL selected=[@"http://hsmty.org/status.json" isEqualToString:hs.url_status];
+    BOOL selected=[[Configuration currentSpaceAPIURL] isEqualToString:hs.url_status];
+    [cell setAsSelectedSpace:selected];
     cell.followingSwitch.on=hs.following;
-    cell.textLabel.text=hs.spaceName;
+    cell.spaceNameLabel.text=hs.spaceName;
+    
+    
     
     return cell;
 }
@@ -148,15 +155,14 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if(self.selectionType==SelectionTypeAlert)
+        return;
     if(![self checkForUpdating])
     {
         HackerSpaceInfo * hs=[self.fetchedResultsController objectAtIndexPath:indexPath];
-        [Configuration setCurrentSpaceName:hs.spaceName];
-//        [Configuration setCurrentSpaceAPIURL:hs.url_status];
-//        [[ContentManager contentManager] launchContentUpdateWithURL:hs.url_status];
-//        
-        [Configuration setCurrentSpaceAPIURL:HSMTY_URL];
-        [[ContentManager contentManager] launchContentUpdateWithURL:HSMTY_URL];
+        [Configuration setCurrentSpaceName:hs.spaceName];     
+        [Configuration setCurrentSpaceAPIURL:hs.url_status];
+        [[ContentManager contentManager] launchContentUpdateWithURL:hs.url_status];
         
         [self dismissViewControllerAnimated:YES completion:nil];
     }

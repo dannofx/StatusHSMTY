@@ -1,10 +1,10 @@
-/* 
-  Localizable.strings
-  StatusHSMTY
-
-  Created by Danno on 2/26/13.
-  Copyright (c) 2013 Danno. All rights reserved.
-*/
+/*
+ Localizable.strings
+ StatusHSMTY
+ 
+ Created by Danno on 2/26/13.
+ Copyright (c) 2013 Danno. All rights reserved.
+ */
 "erroractualizacion" ="Ha ocurrido un error durante la actualización";
 "Events" = "Eventos";
 "espereaactualizacion" = "Espere a que termine la actualización para ver contenido.";
@@ -19,16 +19,18 @@
 "Open" = "Abierto";
 "Closed" = "Cerrado";
 "Start:" = "Inicia: ";
-"End:" = "End: ";
+"End:" = "Termina: ";
 "Since:" = "Hace: ";
 "days" = " dias ";
 "hours" = " horas ";
 "minutes" = " minutos ";
 "seconds" = " segundos ";
 "Description no available" = "Descripción no dispobible.";
-"Date no available" = "Fecha no disponible";
-"No available" = "No disponible";
+"Date no available" = "Date no available";
+"No available" = "No available";
 "espereactualizacion" = "Espere a que termine la actualización.";
+"Nofollowing" = "No following";
+"Following" = "Following";
 "proximosEventos" = "Próximos eventos";
 "entradasSalidas" = "Entradas - Salidas";
 "procesando" = "Procesando";

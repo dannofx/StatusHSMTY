@@ -30,4 +30,13 @@
     SpaceSelectorNavigationController * spaceController=[self.storyboard instantiateViewControllerWithIdentifier:@"spaceSelector"];
     [self presentViewController:spaceController animated:YES completion:nil];
 }
+
+-(BOOL)shouldAutorotate
+{
+    return NO;
+}
+-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return toInterfaceOrientation==UIInterfaceOrientationPortrait;
+}
 @end

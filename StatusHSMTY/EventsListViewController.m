@@ -24,6 +24,9 @@
 @property(nonatomic,retain) CustomPageViewController * carrouselViewController;
 @property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
 
+-(void)configureRegularCellEvent:(EventCell *)cell withEvent:(Event *)event;
+-(void)configureSpecialCellEvent:(EventCell *)cell withEvent:(Event *)event andtag:(NSInteger)tag;
+
 @end
 
 @implementation EventsListViewController
@@ -143,27 +146,30 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if(indexPath.section==0)
-    {
-        return SPECIAL_ROW_HEIGHT;
-    }
+    Event * event=[self.fetchedResultsController objectAtIndexPath:indexPath];
+
+    if(event.type==EVENT_TYPE_CUSTOM)
+         return SPECIAL_ROW_HEIGHT;
     else
-    {
-        return REGULAR_ROW_HEIGHT;
-    }
+         return REGULAR_ROW_HEIGHT;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
+    Event * event=[self.fetchedResultsController objectAtIndexPath:indexPath];
+    
     static NSString * cellIdentifier=@"eventItemCell";
     static NSString * specialCellIdentifier=@"specialEventItemCell";
     EventCell *cell ;
-    if(indexPath.section==0)
+    if(event.type==EVENT_TYPE_CUSTOM)
     {
         cell= [tableView dequeueReusableCellWithIdentifier:specialCellIdentifier];
         if (cell == nil)
             cell = [[EventCell alloc] initWithStyle:UITableViewCellStyleValue2
                                     reuseIdentifier:specialCellIdentifier] ;
+        
+        [self configureSpecialCellEvent:cell withEvent:event
+                                 andtag:(START_TAG_FOR_EVENT_IMAGES+indexPath.row)];
         
     }
     else{
@@ -171,53 +177,53 @@
         if (cell == nil)
             cell = [[EventCell alloc] initWithStyle:UITableViewCellStyleValue2
                                     reuseIdentifier:cellIdentifier] ;
+        
+        [self configureRegularCellEvent:cell withEvent:event];
+        
+
     }
     
-    Event * event=[self.fetchedResultsController objectAtIndexPath:indexPath];    
-    //setea datos
-    cell.eventNameLabel.text=event.name;
-#warning  TAMANIO DE FIGURITAS
-#warning INTERNACIONALIZACION
-
-    if(event.type==EVENT_TYPE_CHECKIN||event.type==EVENT_TYPE_CHECKOUT)
-    {
-        cell.dateLabel.text=[event.timeDate stringDateWithShortFormat];
-        if(event.type==EVENT_TYPE_CHECKIN)
-            cell.imageView.image=[UIImage imageNamed:@"entradamini.png"];
-        else
-            cell.imageView.image=[UIImage imageNamed:@"salidamini.png"];
-        
-    }
-    else
-    {
-        ContentManager * contentManager=[ContentManager contentManager];
-        [contentManager removeDownloadObserver:cell];
-        cell.imagePath=event.imagePath;
-        [cell addBorder];
-        cell.dateLabel.text=[event.startDate stringDateWithCompleteFormat];
-        
-        UIImage * eventImage=event.image;
-        if(eventImage==nil)
-        {
-
-            cell.imageView.image=[UIImage imageNamed:@"eventdefault.png"];
-            if(event.imageURL)
-            {
-                DownloadRequest * request=[DownloadRequest requestForFileAt:event.imageURL savingOn:event.imagePath];
-                request.downloadObserver=cell;
-                request.tag=START_TAG_FOR_EVENT_IMAGES+indexPath.row;
-                request.finishObserverSelector=@selector(imageDownloadFinishedSuccessfully:);
-
-                [contentManager addDownloadItemRequest:request];
-            }
-        }else{
-            cell.imageView.image=eventImage;
-
-        }
-    }
 
 
     return cell;
+}
+
+-(void)configureRegularCellEvent:(EventCell *)cell withEvent:(Event *)event
+{
+    cell.eventNameLabel.text=event.name;
+    cell.dateLabel.text=[event.timeDate stringDateWithShortFormat];
+    if(event.type==EVENT_TYPE_CHECKIN)
+        cell.imageView.image=[UIImage imageNamed:@"entradamini.png"];
+    else
+        cell.imageView.image=[UIImage imageNamed:@"salidamini.png"];
+}
+-(void)configureSpecialCellEvent:(EventCell *)cell withEvent:(Event *)event andtag:(NSInteger)tag
+{
+    ContentManager * contentManager=[ContentManager contentManager];
+    [contentManager removeDownloadObserver:cell];
+    cell.imagePath=event.imagePath;
+    [cell addBorder];
+    cell.dateLabel.text=[event.startDate stringDateWithCompleteFormat];
+    cell.eventNameLabel.text=event.name;
+    UIImage * eventImage=event.image;
+    if(eventImage==nil)
+    {
+        
+        cell.imageView.image=[UIImage imageNamed:@"eventdefault.png"];
+        if(event.imageURL)
+        {
+            DownloadRequest * request=[DownloadRequest requestForFileAt:event.imageURL savingOn:event.imagePath];
+            request.downloadObserver=cell;
+            request.tag=tag;
+            request.finishObserverSelector=@selector(imageDownloadFinishedSuccessfully:);
+            
+            [contentManager addDownloadItemRequest:request];
+        }
+    }else{
+        cell.imageView.image=eventImage;
+        
+    }
+
 }
 
 

@@ -78,8 +78,6 @@
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    //http://stackoverflow.com/questions/12504294/programmatically-open-maps-app-in-ios-6
-
 }
 
 - (void)didReceiveMemoryWarning

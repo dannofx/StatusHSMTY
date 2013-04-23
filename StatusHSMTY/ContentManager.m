@@ -48,6 +48,7 @@
 @synthesize updating=_updating;
 @synthesize selectionDelegate;
 
+
 -(NSManagedObjectContext *)coreDataContext{
     
     if(_coreDataContext==nil)

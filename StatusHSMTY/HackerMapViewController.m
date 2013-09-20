@@ -63,7 +63,7 @@
 		pinView.animatesDrop = YES;
 		} 
 	else {
-		[zoneMapView.userLocation setTitle:@"My place"];
+		[zoneMapView.userLocation setTitle:self.titleLocation];
 	}
 	return pinView;
 }

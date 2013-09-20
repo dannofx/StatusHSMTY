@@ -33,6 +33,7 @@
 {
     [super viewDidLoad];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFinishedWithUserInfo:) name:SPACE_UPDATE_NOTIFICATION_NAME object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateFailed:) name:SPACE_UPDATE_FAILED_NOTIFICATION_NAME object:nil];
     [self addBasicButtons];
 }
 
@@ -52,6 +53,11 @@
     self.navigationItem.rightBarButtonItems = @[refreshButton,selectButton];
     UIBarButtonItem * notificationsButton=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"top-alerts.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(manageAlerts:)];
     self.navigationItem.leftBarButtonItem=notificationsButton;
+    
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(performUpdate:)
+             forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
 
 }
 
@@ -75,6 +81,7 @@
 {
     ContentManager * contentManager=[ContentManager contentManager];
     [contentManager launchContentUpdate];
+    [self.refreshControl beginRefreshing];
 
 }
 -(IBAction)selectSpace:(id)sender
@@ -95,12 +102,19 @@
     NSDictionary * userInfo=notification.userInfo;
     NSManagedObjectID * objectID=[userInfo objectForKey:USRINFO_CDOBJID_KEY];
     NSString * spaceName=[userInfo valueForKey:USRINFO_SPACE_KEY];
+    [self.refreshControl endRefreshing];
     [self spaceWasUpdatedWithName:spaceName coreDataID:objectID];
     
 //    USRINFO_CDOBJID_KEY,
 //    spaceName,USRINFO_SPACE_KEY, nil];
 //    NSManagedObjectID * cdObjectID=[userInfo ]
     
+}
+-(void)updateFailed:(NSNotification *)notification
+{
+    [self.refreshControl endRefreshing];
+
+
 }
 
 -(void)spaceWasUpdatedWithName:(NSString *)spaceName coreDataID:(NSManagedObjectID *)coreDataID

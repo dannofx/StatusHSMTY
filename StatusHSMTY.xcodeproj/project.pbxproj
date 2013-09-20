@@ -1009,10 +1009,13 @@
 		5126FB4C16D2EBC1007246D8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Daniel Felipe Heredia Saucedo (6NZF4RQUX2)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StatusHSMTY/StatusHSMTY-Prefix.pch";
 				INFOPLIST_FILE = "StatusHSMTY/StatusHSMTY-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "4572045F-7135-4C11-A256-0CA5C068C39D";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1020,10 +1023,13 @@
 		5126FB4D16D2EBC1007246D8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Daniel Felipe Heredia Saucedo (6NZF4RQUX2)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StatusHSMTY/StatusHSMTY-Prefix.pch";
 				INFOPLIST_FILE = "StatusHSMTY/StatusHSMTY-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "4572045F-7135-4C11-A256-0CA5C068C39D";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

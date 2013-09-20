@@ -64,7 +64,7 @@
     [self setStatusViewInLodingState:NO];
     hackerSpace=[[ContentManager contentManager] spaceInfoForName:[Configuration currentSpaceName]];
     [self performLoadOperations];
-    self.title=@"Status";
+    self.title=NSLocalizedString(@"Status",@"Status");
    
 }
 
@@ -299,10 +299,10 @@
 #pragma mark - Web Action Sheet
 -(IBAction)launchWebActionSheet
 {
-    NSString *actionSheetTitle = @"What do you want to do?"; //Action Sheet Title
-    NSString *cancelTitle = @"Cancel"; //Action Sheet Button Titles
-    NSString *openWebTitle = @"Open web page";
-    NSString *copyToCBTitle= @"Copy to clipboard";
+    NSString *actionSheetTitle = NSLocalizedString( @"What do you want to do?",@""); //Action Sheet Title
+    NSString *cancelTitle = NSLocalizedString(@"Cancel",@"Cancel"); //Action Sheet Button Titles
+    NSString *openWebTitle = NSLocalizedString(@"Open web page",@"Open web page");
+    NSString *copyToCBTitle= NSLocalizedString(@"Copy to clipboard",@"Copy to clipboard");
 
     if(actionSheet==nil)
     {

@@ -18,7 +18,7 @@
     SpaceSelectorNavigationController * navController=self.destinationViewController;
     SpaceSelectorController * selectorController=[[navController viewControllers] objectAtIndex:0];
     selectorController.selectionType=SelectionTypeSpace;
-    selectorController.title=@"Select space";
+    selectorController.title=NSLocalizedString( @"Select space", @"Select space");
     [sourceController presentViewController:navController animated:YES completion:nil];
 }
 

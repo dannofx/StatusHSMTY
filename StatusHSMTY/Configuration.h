@@ -16,4 +16,6 @@
 +(NSString *)currentSpaceAPIURL;
 +(void)setPushToken:(NSString *)token;
 +(NSString *)pushToken;
++(void)setUUIDForApp:(NSString *)token;
++(NSString *)UUIDForApp;
 @end

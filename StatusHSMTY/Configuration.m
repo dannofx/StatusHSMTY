@@ -35,11 +35,33 @@
         [STKeychain storeUsername:PUSH_TOKEN_KEY andPassword:token forServiceName:PUSH_TOKEN_KEYCHAIN updateExisting:YES error:nil];
     else
         [STKeychain deleteItemForUsername:PUSH_TOKEN_KEY andServiceName:PUSH_TOKEN_KEYCHAIN error:nil];
-
+    
 }
 +(NSString *)pushToken
 {
     return [STKeychain getPasswordForUsername:PUSH_TOKEN_KEY andServiceName:PUSH_TOKEN_KEYCHAIN error:nil];
+}
++(void)setUUIDForApp:(NSString *)token
+{
+    if(token)
+        [STKeychain storeUsername:UUID_KEY andPassword:token forServiceName:UUID_KEYCHAIN updateExisting:YES error:nil];
+    else
+        [STKeychain deleteItemForUsername:UUID_KEY andServiceName:UUID_KEYCHAIN error:nil];
+    
+}
++(NSString *)UUIDForApp
+{
+    NSString * currentUUID= [STKeychain getPasswordForUsername:UUID_KEY andServiceName:UUID_KEYCHAIN error:nil];
+    
+    if(currentUUID==nil)
+    {
+        CFUUIDRef uuidObject = CFUUIDCreate(kCFAllocatorDefault);
+        currentUUID = (__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, uuidObject);
+        CFRelease(uuidObject);
+        [self setUUIDForApp:currentUUID];
+    }
+    
+    return currentUUID;
 }
 
 @end

@@ -12,8 +12,9 @@
 #define HSMTY_URL @"http://localhost/~danno/status.json"
 #define PUSH_ADDRESS @"http://api.hsmty.org/idevice"
 #define SPACE_UPDATE_NOTIFICATION_NAME @"currentSpaceUpdate"
+#define SPACE_UPDATE_FAILED_NOTIFICATION_NAME @"currentSpaceFailedUpdate"
 #define SPACELIST_UPDATE_NOTIFICATION_NAME @"spaceListUpdate"
-#define LIST_SPACES_URL @"http://openspace.slopjong.de/directory.json"
+#define LIST_SPACES_URL @"http://spaceapi.net/directory.json"
 
 #define TIMEOUT_HIGH_PRIORITY 30
 #define TIMEOUT_LOW_PRIORITY 5
@@ -32,6 +33,10 @@
 
 #define PUSH_TOKEN_KEY @"pushTokenKey"
 #define PUSH_TOKEN_KEYCHAIN @"pushTokenKeyChain"
+#define UUID_KEY @"uuidKey"
+#define UUID_KEYCHAIN @"uuidKeyChain"
+
+#define SECRET_FOR_PUSH @"esteesunsecretoparaaquelloquequello"
 
 #define WEBVIEW_SEGUE @"webviewsegue"
 

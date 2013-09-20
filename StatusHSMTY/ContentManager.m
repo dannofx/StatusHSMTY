@@ -149,7 +149,7 @@
     [self setInUpdateState:YES];
     [self activateLoadingNotifier:YES];
     NSURL *url = [NSURL URLWithString:hackersURL];
-    
+
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     [request setTimeOutSeconds:TIMEOUT_HIGH_PRIORITY];
     [request setDidFinishSelector:@selector(contentDownloadedSuccessfully:)];
@@ -196,7 +196,7 @@
     
     if(error!=nil)
     {
-        NSLog(@"ERROR: El servidor envio un formato de respuesta no esperado.");
+        NSLog(@"ERROR: El servidor envio un formato de respuesta no esperado: %@.",[error description]);
         [self contentDownloadFailed:request];
         return;
     }
@@ -209,6 +209,7 @@
     [Notifications launchErrorBox:self message:NSLocalizedString(@"erroractualizacion", @"Update error")];
     [self activateLoadingNotifier:NO];
     [self setInUpdateState:NO];
+    [self notifyUpdateSpaceFailed];
 }
 
 -(void)spaceListDownloadedSuccessfully:(ASIHTTPRequest *) request
@@ -486,15 +487,30 @@
         }
     
     NSArray * events=[dictionary objectForKey:@"events"];
+    [self mapEventsFromArray:events toSpace:spaceInfo];
+    NSArray * happenings=[dictionary objectForKey:@"ext_happenings"];
+    [self mapEventsFromArray:happenings toSpace:spaceInfo];
+    
+    [self saveCoreData];
+    
+    [self notifyUpdateWithSpace:spaceInfo];
+    [self activateLoadingNotifier:NO];
+    [self setInUpdateState:NO];
+    [self.coreDataContext refreshObject:spaceInfo mergeChanges:NO];
+}
+
+-(void)mapEventsFromArray:(NSArray *)events toSpace:(HackerSpaceInfo *)spaceInfo
+{
     if(events!=nil)
         for(NSDictionary * eventDictionary  in events)
         {
-
+            if(![eventDictionary isKindOfClass:[NSDictionary class]])
+                continue;
+            
             Event * event=[NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Event class]) inManagedObjectContext:self.coreDataContext];
             
             event.attendant=[eventDictionary valueForKey:@"name"];
             event.time=[[eventDictionary valueForKey:@"t"] integerValue];
-            event.extra=[eventDictionary valueForKey:@"extra"];
             NSString *urlImage=[eventDictionary valueForKey:@"image"];
             
             if([[eventDictionary valueForKey:@"type"] isEqualToString:@"check-in"])
@@ -503,6 +519,7 @@
                 NSString * type=@"Check-in: ";
                 event.name=[type stringByAppendingString:event.attendant];
                 event.standarEvent=YES;
+                event.extra=[eventDictionary valueForKey:@"extra"];
             }
             else if([[eventDictionary valueForKey:@"type"] isEqualToString:@"check-out"])
             {
@@ -510,6 +527,7 @@
                 NSString * type=@"Check-out: ";
                 event.name=[type stringByAppendingString:event.attendant];
                 event.standarEvent=YES;
+                event.extra=[eventDictionary valueForKey:@"extra"];
             }
             else
             {
@@ -517,25 +535,20 @@
                 event.name=[eventDictionary valueForKey:@"name"];
                 event.start=[[eventDictionary valueForKey:@"start"] integerValue];
                 event.end=[[eventDictionary valueForKey:@"end"] integerValue];
+                event.extra=[eventDictionary valueForKey:@"desc"];
                 event.standarEvent=NO;
             }
             
             if(urlImage)
             {
                 event.imageURL=[eventDictionary valueForKey:@"image"];
-                event.imagePath=[self createImageFilePathForSpaceName:spaceName];
+                event.imagePath=[self createImageFilePathForSpaceName:spaceInfo.spaceName];
             }
             
             event.hackerSpace=spaceInfo;
             
         }
-    
-    [self saveCoreData];
-    
-    [self notifyUpdateWithSpace:spaceInfo];
-    [self activateLoadingNotifier:NO];
-    [self setInUpdateState:NO];
-    [self.coreDataContext refreshObject:spaceInfo mergeChanges:NO];
+
 }
 
 -(NSString *)createImageFilePathForSpaceName:(NSString *)spaceName
@@ -579,6 +592,16 @@
     
     NSNotification *notification = [NSNotification notificationWithName:SPACE_UPDATE_NOTIFICATION_NAME
                                                                  object:self userInfo:userInfo];
+    
+    NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
+    [notificationCenter postNotification:notification];
+}
+
+-(void)notifyUpdateSpaceFailed
+{
+
+    NSNotification *notification = [NSNotification notificationWithName:SPACE_UPDATE_FAILED_NOTIFICATION_NAME
+                                                                 object:self userInfo:nil];
     
     NSNotificationCenter * notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter postNotification:notification];

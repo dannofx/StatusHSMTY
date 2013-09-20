@@ -47,7 +47,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title=@"Contact";
+    self.title=NSLocalizedString(@"Contact",@"Contact");
     hackerSpace=[[ContentManager contentManager] spaceInfoForName:[Configuration currentSpaceName]];
     
 }
@@ -66,7 +66,7 @@
         [self.view addSubview:_successfullCopyDialog];
         _successfullCopyDialog.customView=[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"checkcopy.png"]];
         _successfullCopyDialog.mode=MBProgressHUDModeCustomView;
-        _successfullCopyDialog.labelText=@"Copied to clipboard";
+        _successfullCopyDialog.labelText=NSLocalizedString( @"Copied to clipboard",@"Copied to clipboard");
     }
     return _successfullCopyDialog;
 }
@@ -174,10 +174,10 @@
         
     }else if([self contactIsPhoneType:currentContact])
     {
-        NSString *actionSheetTitle = @"What do you want to do?"; //Action Sheet Title
-        NSString *cancelTitle = @"Cancel"; //Action Sheet Button Titles
-        NSString *copyTitle = @"Copy";
-        NSString *addContactTitle = @"Add contact";
+        NSString *actionSheetTitle = NSLocalizedString( @"What do you want to do?",@"What do you want to do?"); //Action Sheet Title
+        NSString *cancelTitle = NSLocalizedString(@"Cancel",@"Cancel"); //Action Sheet Button Titles
+        NSString *copyTitle = NSLocalizedString(@"Copy",@"Copy");
+        NSString *addContactTitle = NSLocalizedString(@"Add contact",@"Add contact");
         
         UIActionSheet *actionSheet = [[UIActionSheet alloc]
                                       initWithTitle:actionSheetTitle
@@ -305,7 +305,7 @@
             break;
         case MFMailComposeResultFailed:
         default:
-            [Notifications launchErrorBox:nil message:@"Mail failed: the email message was not saved or queued, possibly due to an error."];
+            [Notifications launchErrorBox:nil message:NSLocalizedString( @"Mail failed: the email message was not saved or queued, possibly due to an error.",@"Mail failed: the email message was not saved or queued, possibly due to an error.")];
             break;
     }
     // Remove the mail view
@@ -343,7 +343,7 @@
     }
     else
     {
-        [Notifications launchErrorBox:nil message:@"Your device doesn't support the composer sheet"];
+        [Notifications launchErrorBox:nil message:NSLocalizedString(@"Your device doesn't support the composer sheet",@"Your device doesn't support the composer sheet")];
     }
     currentContact=nil;
     
@@ -367,10 +367,10 @@
     if ((people != nil) && [people count])
     {
         // Show an alert if "Appleseed" is not in Contacts
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                        message:@"Rhe contact already exists"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error",@"Error")
+                                                        message:NSLocalizedString(@"The contact already exists",@"The contact already exists")
                                                        delegate:nil
-                                              cancelButtonTitle:@"Cancel"
+                                              cancelButtonTitle:NSLocalizedString( @"Cancel",@"Cancel")
                                               otherButtonTitles:nil];
         [alert show];
     }

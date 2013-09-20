@@ -161,8 +161,8 @@
     {
         HackerSpaceInfo * hs=[self.fetchedResultsController objectAtIndexPath:indexPath];
         [Configuration setCurrentSpaceName:hs.spaceName];     
-        [Configuration setCurrentSpaceAPIURL:hs.url_status];
-        [[ContentManager contentManager] launchContentUpdateWithURL:hs.url_status];
+        [Configuration setCurrentSpaceAPIURL:@"http://localhost/~danno/status.json" ];//hs.url_status];
+        [[ContentManager contentManager] launchContentUpdateWithURL:@"http://localhost/~danno/status.json"];//hs.url_status];
         
         [self dismissViewControllerAnimated:YES completion:nil];
     }

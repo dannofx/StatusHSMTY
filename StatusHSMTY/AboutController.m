@@ -33,7 +33,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.versionLabel.text= [NSString stringWithFormat: @"Version: %@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] ];
+    self.versionLabel.text= [NSString stringWithFormat: NSLocalizedString( @"Version: %@",@"Version: %@"),[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] ];
 	// Do any additional setup after loading the view.
 }
 
@@ -67,10 +67,10 @@
 
 -(void)launchActionSheet
 {
-    NSString *actionSheetTitle = @"What do you want to do?"; //Action Sheet Title
-    NSString *cancelTitle = @"Cancel"; //Action Sheet Button Titles
-    NSString *openWebTitle = @"Open web page";
-    NSString *copyToCBTitle= @"Copy to clipboard";
+    NSString *actionSheetTitle = NSLocalizedString(@"What do you want to do?",@"What do you want to do?"); //Action Sheet Title
+    NSString *cancelTitle = NSLocalizedString(@"Cancel",@"Cancel"); //Action Sheet Button Titles
+    NSString *openWebTitle =NSLocalizedString( @"Open web page",@"Open web page");
+    NSString *copyToCBTitle=NSLocalizedString( @"Copy to clipboard",@"Copy to clipboard");
     
     if(actionSheet==nil)
     {

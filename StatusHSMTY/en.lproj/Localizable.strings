@@ -5,9 +5,9 @@
   Created by Danno on 2/26/13.
   Copyright (c) 2013 Danno. All rights reserved.
 */
-"erroractualizacion" ="Ha ocurrido un error durante la actualización";
+"erroractualizacion" ="An error happend during the update.";
 "Events" = "Events";
-"espereaactualizacion" = "Espere a que termine la actualización para ver contenido.";
+"espereaactualizacion" = "Wait until the update finished.";
 "confirmacion" = "Confirmation";
 "si" = "Yes";
 "no" = "No";
@@ -34,5 +34,21 @@
 "proximosEventos" = "Upcoming events";
 "entradasSalidas" = "Check ins - Check outs";
 "procesando" = "Processing";
-"noPushPossible" = "No es posible realizar esta operacion si no activa las notificaciones en el telefono y/o no tiene acceso a internet.";
-"contacterror" = "Tal vez tengas que dar permisos en la seccion de ajustes de tu telefono para acceder a contactos.";
+"noPushPossible" = "This operation is not possible if alerts aren't activated on the phone or if there is no internet access";
+"contacterror" = "You may have to give permissions in your phone's settings in order to access your contacts.";
+"Status"="Status";
+"What do you want to do?"="What do you want to do?"; 
+"Cancel"="Cancel";
+"Open web page"="Open web page";
+"Copy to clipboard"="Copy to clipboard";
+"Select space"="Select space";
+"Error"="Error";
+"The contact already exists"="The contact already exists";
+"Cancel"="Cancel";
+"Your device doesn't support the composer sheet."="Your device doesn't support the composer sheet.";
+"Mail failed: the email message was not saved or queued, possibly due to an error."="Mail failed: the email message was not saved or queued, possibly due to an error.";
+"Copy"="Copy";
+"Add contact"="Add contact";
+"Copied to clipboard"="Copied to clipboard";
+"Contact"="Contact";
+"Version: %@"="Version: %@";

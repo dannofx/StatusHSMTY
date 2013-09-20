@@ -46,7 +46,7 @@
 {
     [super viewDidLoad];
     hackerSpace=[[ContentManager contentManager] spaceInfoForName:[Configuration currentSpaceName]];
-    self.title=@"Events";
+    self.title=NSLocalizedString(@"Events",@"Events");
 }
 
 - (void)didReceiveMemoryWarning

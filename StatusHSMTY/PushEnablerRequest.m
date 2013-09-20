@@ -56,8 +56,9 @@
         [spacesAddresses addObject:space.url_status];
     }
     
+    NSString * uuid=[Configuration UUIDForApp];
 
-    NSDictionary *finalDictionary = [NSDictionary dictionaryWithObjectsAndKeys:spaces, @"spaceapi", nil];
+    NSDictionary *finalDictionary = [NSDictionary dictionaryWithObjectsAndKeys:spaces, @"spaceapi",SECRET_FOR_PUSH,@"secret", uuid,@"uuid", nil];
     
     //convert object to data
     NSData* jsonData = [NSJSONSerialization dataWithJSONObject:finalDictionary options:kNilOptions error:nil];

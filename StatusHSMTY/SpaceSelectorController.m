@@ -46,6 +46,8 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spacesListWasUpdated)
                                                  name:SPACELIST_UPDATE_NOTIFICATION_NAME
                                                object:nil];
+    if(self.title==nil)
+        self.title=NSLocalizedString( @"Select space", @"Select space");
 }
 
 - (void)didReceiveMemoryWarning
@@ -161,8 +163,10 @@
     {
         HackerSpaceInfo * hs=[self.fetchedResultsController objectAtIndexPath:indexPath];
         [Configuration setCurrentSpaceName:hs.spaceName];     
-        [Configuration setCurrentSpaceAPIURL:@"http://localhost/~danno/status.json" ];//hs.url_status];
-        [[ContentManager contentManager] launchContentUpdateWithURL:@"http://localhost/~danno/status.json"];//hs.url_status];
+        [Configuration setCurrentSpaceAPIURL:hs.url_status];
+        [[ContentManager contentManager] launchContentUpdateWithURL:hs.url_status];
+//        [Configuration setCurrentSpaceAPIURL:@"http://localhost/~danno/status.json" ];//
+//        [[ContentManager contentManager] launchContentUpdateWithURL:@"http://localhost/~danno/status.json"];
         
         [self dismissViewControllerAnimated:YES completion:nil];
     }

@@ -29,8 +29,8 @@
 "Date no available" = "Date no available";
 "No available" = "No available";
 "espereactualizacion" = "Espere a que termine la actualización.";
-"Nofollowing" = "No following";
-"Following" = "Following";
+"Nofollowing" = "Sin suscripción";
+"Following" = "Con suscripción";
 "proximosEventos" = "Próximos eventos";
 "entradasSalidas" = "Entradas - Salidas";
 "procesando" = "Procesando";
@@ -52,3 +52,7 @@
 "Copied to clipboard"="Copiar a portapapeles";
 "Contact"="Contacto";
 "Version: %@"="Versión: %@";
+"Manage alerts"="Administrar alertas";
+"Pull to refresh..." = "Tire para actualizar...";
+"Updating" = "Actualizando";
+

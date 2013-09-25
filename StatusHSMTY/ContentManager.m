@@ -165,7 +165,6 @@
     {
         NSArray * spaces=[self allSpacesEnabledForPush];
         workingToken=pushToken;
-        
         PushEnablerRequest * request=[PushEnablerRequest requestToAddToken:workingToken WithURLs:spaces];
         [request setDelegate:self];
         [request setDidFinishSelector:@selector(enableRequestIsFinished:)];
@@ -510,7 +509,11 @@
             Event * event=[NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Event class]) inManagedObjectContext:self.coreDataContext];
             
             event.attendant=[eventDictionary valueForKey:@"name"];
-            event.time=[[eventDictionary valueForKey:@"t"] integerValue];
+            if([eventDictionary valueForKey:@"t"]!=nil)
+                event.time=[[eventDictionary valueForKey:@"t"] integerValue];
+            else
+                event.time=[[eventDictionary valueForKey:@"timestamp"] integerValue];
+            
             NSString *urlImage=[eventDictionary valueForKey:@"image"];
             
             if([[eventDictionary valueForKey:@"type"] isEqualToString:@"check-in"])
@@ -533,8 +536,16 @@
             {
                 event.type=EVENT_TYPE_CUSTOM;
                 event.name=[eventDictionary valueForKey:@"name"];
-                event.start=[[eventDictionary valueForKey:@"start"] integerValue];
-                event.end=[[eventDictionary valueForKey:@"end"] integerValue];
+                if([eventDictionary valueForKey:@"start"]!=nil)
+                {
+                    event.start=[[eventDictionary valueForKey:@"start"] integerValue];
+                    event.end=[[eventDictionary valueForKey:@"end"] integerValue];
+                }else
+                {
+                    event.start=event.time;
+                    event.end=event.time;
+                
+                }
                 event.extra=[eventDictionary valueForKey:@"desc"];
                 event.standarEvent=NO;
             }

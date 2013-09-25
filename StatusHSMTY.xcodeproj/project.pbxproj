@@ -146,6 +146,7 @@
 		51AB0D3B17265F56000D1D1A /* eventdefault.png in Resources */ = {isa = PBXBuildFile; fileRef = 51AB0D2E17265F53000D1D1A /* eventdefault.png */; };
 		51AB0D3C17265F56000D1D1A /* eventdefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 51AB0D2F17265F55000D1D1A /* eventdefault@2x.png */; };
 		51DAF8B216D584510019C046 /* Notifications.m in Sources */ = {isa = PBXBuildFile; fileRef = 51DAF8B116D584510019C046 /* Notifications.m */; };
+		51E4785417F13DE00005C6C7 /* appicon120.png in Resources */ = {isa = PBXBuildFile; fileRef = 51E4785317F13DE00005C6C7 /* appicon120.png */; };
 		51E8E5B716D3E29C0077BC9E /* StatusViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51E8E5B616D3E29C0077BC9E /* StatusViewController.m */; };
 		51E8E5BA16D3E2BC0077BC9E /* EventsListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51E8E5B916D3E2BC0077BC9E /* EventsListViewController.m */; };
 		51E8E5BD16D3E2DA0077BC9E /* DetailedEventViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 51E8E5BC16D3E2DA0077BC9E /* DetailedEventViewController.m */; };
@@ -338,6 +339,8 @@
 		51AB0D2F17265F55000D1D1A /* eventdefault@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "eventdefault@2x.png"; sourceTree = "<group>"; };
 		51DAF8B016D584510019C046 /* Notifications.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Notifications.h; sourceTree = "<group>"; };
 		51DAF8B116D584510019C046 /* Notifications.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Notifications.m; sourceTree = "<group>"; };
+		51E4785217EE044D0005C6C7 /* es */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = es; path = es.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		51E4785317F13DE00005C6C7 /* appicon120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = appicon120.png; sourceTree = "<group>"; };
 		51E8E5B516D3E29C0077BC9E /* StatusViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatusViewController.h; sourceTree = "<group>"; };
 		51E8E5B616D3E29C0077BC9E /* StatusViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StatusViewController.m; sourceTree = "<group>"; };
 		51E8E5B816D3E2BC0077BC9E /* EventsListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EventsListViewController.h; sourceTree = "<group>"; };
@@ -568,6 +571,7 @@
 			children = (
 				51AB0D2417265F38000D1D1A /* appicon.png */,
 				51AB0D2617265F3E000D1D1A /* appicon@2x.png */,
+				51E4785317F13DE00005C6C7 /* appicon120.png */,
 				51AB0D2717265F40000D1D1A /* appicon512.png */,
 				51AB0D2817265F44000D1D1A /* appicon1024.png */,
 				51AB0D2917265F46000D1D1A /* checkcopy.png */,
@@ -750,6 +754,11 @@
 			attributes = {
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = Danno;
+				TargetAttributes = {
+					5126FB1C16D2EBC1007246D8 = {
+						DevelopmentTeam = T845BJTYD5;
+					};
+				};
 			};
 			buildConfigurationList = 5126FB1816D2EBC1007246D8 /* Build configuration list for PBXProject "StatusHSMTY" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -820,6 +829,7 @@
 				516625AC1723A6D8004ABC32 /* buttonmap@2x.png in Resources */,
 				516625AD1723A6D8004ABC32 /* buttonweb@2x.png in Resources */,
 				516625AE1723A6D8004ABC32 /* cerrado@2x.png in Resources */,
+				51E4785417F13DE00005C6C7 /* appicon120.png in Resources */,
 				516625AF1723A6D8004ABC32 /* check@2x.png in Resources */,
 				516625B01723A6D8004ABC32 /* contact-facebook@2x.png in Resources */,
 				516625B11723A6D8004ABC32 /* contact-google@2x.png in Resources */,
@@ -934,6 +944,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				5126FB3916D2EBC1007246D8 /* en */,
+				51E4785217EE044D0005C6C7 /* es */,
 			);
 			name = MainStoryboard.storyboard;
 			sourceTree = "<group>";
@@ -1009,13 +1020,14 @@
 		5126FB4C16D2EBC1007246D8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Daniel Felipe Heredia Saucedo (6NZF4RQUX2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StatusHSMTY/StatusHSMTY-Prefix.pch";
 				INFOPLIST_FILE = "StatusHSMTY/StatusHSMTY-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4572045F-7135-4C11-A256-0CA5C068C39D";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1023,13 +1035,14 @@
 		5126FB4D16D2EBC1007246D8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Daniel Felipe Heredia Saucedo (6NZF4RQUX2)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "StatusHSMTY/StatusHSMTY-Prefix.pch";
 				INFOPLIST_FILE = "StatusHSMTY/StatusHSMTY-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "4572045F-7135-4C11-A256-0CA5C068C39D";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

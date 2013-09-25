@@ -234,10 +234,14 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if(![self isUpdating])
     {
-        NSInteger carrouselIndex=[self globalIndexFromIndexPath:indexPath];
-        NSLog(@"SeBUSCARA %d",carrouselIndex);
-        [self.navigationController pushViewController:self.carrouselViewController animated:YES];
-        [self.carrouselViewController moveToIndex:carrouselIndex animated:NO];
+//        Buggy Library
+//        NSInteger carrouselIndex=[self globalIndexFromIndexPath:indexPath];
+//        NSLog(@"SeBUSCARA %d",carrouselIndex);
+//        [self.navigationController pushViewController:self.carrouselViewController animated:YES];
+//        [self.carrouselViewController moveToIndex:carrouselIndex animated:NO];
+        DetailedEventViewController * detailVC=[self.storyboard instantiateViewControllerWithIdentifier:@"detailItemEvent"];
+        detailVC.event=[self.fetchedResultsController objectAtIndexPath:indexPath];
+        [self.navigationController pushViewController:detailVC animated:YES];
     }
     else{
         [Notifications launchErrorBox:nil message:NSLocalizedString(@"espereaactualizacion",@"Espere a que termine la actualización para ver contenido.")];

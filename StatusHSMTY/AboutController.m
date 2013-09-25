@@ -34,6 +34,7 @@
 {
     [super viewDidLoad];
     self.versionLabel.text= [NSString stringWithFormat: NSLocalizedString( @"Version: %@",@"Version: %@"),[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] ];
+    self.title=NSLocalizedString(@"informacion", @"Information");
 	// Do any additional setup after loading the view.
 }
 

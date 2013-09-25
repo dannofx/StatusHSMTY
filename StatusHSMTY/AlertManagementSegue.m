@@ -17,7 +17,7 @@
     SpaceSelectorNavigationController * navController=self.destinationViewController;
     SpaceSelectorController * selectorController=[[navController viewControllers] objectAtIndex:0];
     selectorController.selectionType=SelectionTypeAlert;
-    selectorController.title=@"Manage alerts";
+    selectorController.title=NSLocalizedString( @"Manage alerts",@"Manage alerts");
     [sourceController presentViewController:navController animated:YES completion:nil];
 }
 

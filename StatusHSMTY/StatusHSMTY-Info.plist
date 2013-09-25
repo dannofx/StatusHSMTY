@@ -10,6 +10,7 @@
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIconFiles</key>
 	<array>
+		<string>appicon120</string>
 		<string>appicon.png</string>
 		<string>appicon@2x.png</string>
 	</array>

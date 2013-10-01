@@ -40,4 +40,7 @@
 
 #define WEBVIEW_SEGUE @"webviewsegue"
 
+#define CURRENT_IOS_VERSION [[[UIDevice currentDevice] systemVersion] floatValue]
+#define NEW_STYLE_IOS_VERSION 7.0
+
 #endif

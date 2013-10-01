@@ -49,9 +49,17 @@
 {
     //Right buttons
     UIBarButtonItem * refreshButton=[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(performUpdate:)];
-    refreshButton.tintColor=[UIColor whiteColor];
+   
     UIBarButtonItem * selectButton=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"top-change.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(selectSpace:)];
-    selectButton.tintColor=[UIColor whiteColor];
+    if(CURRENT_IOS_VERSION>=NEW_STYLE_IOS_VERSION)
+    {
+        refreshButton.tintColor=[UIColor whiteColor];
+        selectButton.tintColor=[UIColor whiteColor];
+    }else
+    {
+        refreshButton.tintColor=[UIColor blackColor];
+        selectButton.tintColor=[UIColor blackColor];
+    }
     self.navigationItem.rightBarButtonItems = @[refreshButton,selectButton];
 //    UIBarButtonItem * notificationsButton=[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"top-alerts.png"] style:UIBarButtonItemStyleBordered target:self action:@selector(manageAlerts:)];
 //    notificationsButton.tintColor=[UIColor whiteColor];

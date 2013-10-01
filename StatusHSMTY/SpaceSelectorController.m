@@ -48,6 +48,13 @@
                                                object:nil];
     if(self.title==nil)
         self.title=NSLocalizedString( @"Select space", @"Select space");
+    
+    if(CURRENT_IOS_VERSION<NEW_STYLE_IOS_VERSION)
+    {
+       // NSArray * topButtons=self.navigationItem.ba
+        self.navigationItem.leftBarButtonItem.tintColor=[UIColor blackColor];
+        self.navigationItem.rightBarButtonItem.tintColor=[UIColor blackColor];
+    }
 }
 
 - (void)didReceiveMemoryWarning
